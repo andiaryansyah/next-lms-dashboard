@@ -49,10 +49,10 @@ const SingleStudentPage = () => {
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.{" "}
               </p>
               <div className="flex items-center justify-between gap-2 flex-wrap text-xs font-medium">
-                <div className="w-full md:w-1/3 lg:w-full xl:w-1/3 flex items-center gap-2">
+                {/* <div className="w-full md:w-1/3 lg:w-full xl:w-1/3 flex items-center gap-2">
                   <Image src="/blood.png" alt="" width={14} height={14} />
                   <span>A+</span>
-                </div>
+                </div> */}
                 <div className="w-full md:w-1/3 lg:w-full xl:w-1/3 flex items-center gap-2">
                   <Image src="/date.png" alt="" width={14} height={14} />
                   <span>January 2025</span>
@@ -139,19 +139,34 @@ const SingleStudentPage = () => {
         <div className="bg-white p-4 rounded-md">
           <h1 className="text-xl font-semibold">Shortcuts</h1>
           <div className="mt-4 flex gap-4 flex-wrap text-xs text-gray-500">
-            <Link href="/" className="p-4 rounded-md bg-pickSkyLight">
+            <Link
+              href={`/list/lessons?classId=${2}`}
+              className="p-4 rounded-md bg-pickSkyLight"
+            >
               Student&apos;s Lessons
             </Link>
-            <Link href="/" className="p-4 rounded-md bg-pickPurpleLight">
+            <Link
+              href={`/list/teachers?classId=${2}`}
+              className="p-4 rounded-md bg-pickPurpleLight"
+            >
               Student&apos;s Teachers
             </Link>
-            <Link href="/" className="p-4 rounded-md bg-pickYellowLight">
+            <Link
+              href={`/list/exams?classId=${2}`}
+              className="p-4 rounded-md bg-pickYellowLight"
+            >
               Student&apos;s Exams
             </Link>
-            <Link href="/" className="p-4 rounded-md bg-pickSkyLight">
+            <Link
+              href={`/list/assignments?classId=${2}`}
+              className="p-4 rounded-md bg-pickSkyLight"
+            >
               Student&apos;s Assignments
             </Link>
-            <Link href="/" className="p-4 rounded-md bg-pink-50">
+            <Link
+              href={`/list/results?studentId=${"student2"}`}
+              className="p-4 rounded-md bg-pink-50"
+            >
               Student&apos; Results
             </Link>
           </div>
