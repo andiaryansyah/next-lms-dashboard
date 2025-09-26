@@ -2,14 +2,20 @@
 const nextConfig = {
   images: {
     remotePatterns: [
+      // {
+      //   hostname: "images.pexels.com",
+      // },
+      // {
+      //   hostname: "png.pngtree.com",
+      // },
+      // {
+      //   hostname: "marketplace.canva.com",
+      // },
+      // {
+      //   hostname: "res.cloudinary.com",
+      // },
       {
-        hostname: "images.pexels.com",
-      },
-      {
-        hostname: "png.pngtree.com",
-      },
-      {
-        hostname: "marketplace.canva.com",
+        hostname: "**",
       },
     ],
   },

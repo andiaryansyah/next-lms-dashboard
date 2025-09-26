@@ -4,10 +4,9 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { prisma } from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
-import { currentUserId, role } from "@/lib/utils";
+import { getAuthHeaders } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 type ResultList = {
@@ -21,6 +20,9 @@ type ResultList = {
   score: number;
   startTime: Date;
 };
+
+const { role, userId: currentUserId } = getAuthHeaders();
+
 const columns = [
   {
     header: "Title",

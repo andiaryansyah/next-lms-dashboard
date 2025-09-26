@@ -1,15 +1,16 @@
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { prisma } from "@/lib/prisma";
 import { ITEM_PER_PAGE } from "@/lib/settings";
-import { currentUserId, role } from "@/lib/utils";
+import { getAuthHeaders } from "@/lib/utils";
 import { Class, Exam, Prisma, Subject, Teacher } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+const { role, userId } = getAuthHeaders();
 type ExamList = Exam & {
   lesson: {
     subject: Subject;
@@ -64,8 +65,8 @@ const renderRow = (item: ExamList) => (
       <div className="flex items-center gap-2">
         {(role === "admin" || role === "teacher") && (
           <>
-            <FormModal table="exam" type="update" data={item} />
-            <FormModal table="exam" type="delete" id={item.id} />
+            <FormContainer table="exam" type="update" data={item} />
+            <FormContainer table="exam" type="delete" id={item.id} />
           </>
         )}
       </div>
@@ -116,19 +117,19 @@ const ExamListPage = async ({
     case "admin":
       break;
     case "teacher":
-      query.lesson.teacherId = currentUserId!;
+      query.lesson.teacherId = userId!;
       break;
     case "student":
       query.lesson.class = {
         students: {
-          some: { id: currentUserId! },
+          some: { id: userId! },
         },
       };
       break;
     case "parent":
       query.lesson.class = {
         students: {
-          some: { parentId: currentUserId! },
+          some: { parentId: userId! },
         },
       };
       break;
@@ -172,7 +173,7 @@ const ExamListPage = async ({
               <Image src="/sort.png" alt="sort" width={14} height={14} />
             </button>
             {(role === "admin" || role === "teacher") && (
-              <FormModal table="exam" type="create" />
+              <FormContainer table="exam" type="create" />
             )}
           </div>
         </div>
