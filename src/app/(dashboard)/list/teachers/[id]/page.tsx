@@ -77,7 +77,7 @@ const SingleTeacherPage = async ({
                 <div className="w-full md:w-1/2 lg:w-full xl:w-1/2 flex items-center gap-2">
                   <Image src="/date.png" alt="" width={14} height={14} />
                   <span>
-                    {new Intl.DateTimeFormat("en-US").format(teacher.birthday)}
+                    {new Intl.DateTimeFormat("id-ID").format(teacher.birthday)}
                   </span>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-full xl:w-1/2 flex items-center gap-2">
@@ -169,31 +169,31 @@ const SingleTeacherPage = async ({
           <h1 className="text-xl font-semibold">Shortcuts</h1>
           <div className="mt-4 flex gap-4 flex-wrap text-xs text-gray-500">
             <Link
-              href={`/list/classes?supervisorId=${"teacher2"}`}
+              href={`/list/classes?supervisorId=${teacher.id}`}
               className="p-4 rounded-md bg-pickSkyLight"
             >
               Teacher&apos;s Classes
             </Link>
             <Link
-              href={`/list/students?teacherId=${"teacher2"}`}
+              href={`/list/students?teacherId=${teacher.id}`}
               className="p-4 rounded-md bg-pickPurpleLight"
             >
               Teacher&apos;s Students
             </Link>
             <Link
-              href={`/list/lessons?teacherId=${"teacher2"}`}
+              href={`/list/lessons?teacherId=${teacher.id}`}
               className="p-4 rounded-md bg-pink-50"
             >
               Teacher&apos;s Lessons
             </Link>
             <Link
-              href={`/list/exams?teacherId=${"teacher2"}`}
+              href={`/list/exams?teacherId=${teacher.id}`}
               className="p-4 rounded-md bg-pickYellowLight"
             >
               Teacher&apos;s Exams
             </Link>
             <Link
-              href={`/list/assignments?teacherId=${"teacher2"}`}
+              href={`/list/assignments?teacherId=${teacher.id}`}
               className="p-4 rounded-md bg-pickSkyLight"
             >
               Teacher&apos;s Assignments

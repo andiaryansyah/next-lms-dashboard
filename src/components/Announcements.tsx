@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import Link from "next/link";
 
 const Announcements = async () => {
   const { userId, sessionClaims } = await auth();
@@ -28,7 +29,9 @@ const Announcements = async () => {
     <div className="bg-white p-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold my-4">Announcements</h1>
-        <span className="text-xs text-gray-400">View All</span>
+        <Link href={"/list/announcements"}>
+          <span className="text-xs text-gray-400">View All</span>
+        </Link>
       </div>
       <div className="flex flex-col gap-4">
         {data[0] && (
@@ -36,10 +39,14 @@ const Announcements = async () => {
             <div className="flex items-center justify-between">
               <h2 className="font-medium">{data[0].title}</h2>
               <span className="text-xs text-gray-400 bg-white rounden-md px-1 py-1">
-                {new Intl.DateTimeFormat("en-US").format(data[0].date)}
+                {new Intl.DateTimeFormat("id-ID").format(data[0].date)}
               </span>
             </div>
-            <p className="text-sm text-gray-400 mt-1">{data[0].description}</p>
+            <p className="text-sm text-gray-400 mt-1">
+              {data[0].description.length > 100
+                ? `${data[0].description.substring(0, 100)}...`
+                : data[0].description}
+            </p>
           </div>
         )}
         {data[1] && (
@@ -47,7 +54,7 @@ const Announcements = async () => {
             <div className="flex items-center justify-between">
               <h2 className="font-medium">{data[1].title}</h2>
               <span className="text-xs text-gray-400 bg-white rounden-md px-1 py-1">
-                {new Intl.DateTimeFormat("en-US").format(data[1].date)}
+                {new Intl.DateTimeFormat("id-ID").format(data[1].date)}
               </span>
             </div>
             <p className="text-sm text-gray-400 mt-1">{data[1].description}</p>
@@ -58,7 +65,7 @@ const Announcements = async () => {
             <div className="flex items-center justify-between">
               <h2 className="font-medium">{data[2].title}</h2>
               <span className="text-xs text-gray-400 bg-white rounden-md px-1 py-1">
-                {new Intl.DateTimeFormat("en-US").format(data[2].date)}
+                {new Intl.DateTimeFormat("id-ID").format(data[2].date)}
               </span>
             </div>
             <p className="text-sm text-gray-400 mt-1">{data[2].description}</p>

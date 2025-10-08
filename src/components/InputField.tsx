@@ -8,6 +8,11 @@ type InputFieldProps = {
   defaultValue?: string;
   error?: FieldError;
   hidden?: boolean;
+  step?: string;
+  textarea?: boolean;
+  placeholder?: string;
+  maxLength?: number;
+  rows?: number;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 };
 const InputField = ({
@@ -18,18 +23,44 @@ const InputField = ({
   defaultValue,
   error,
   hidden,
+  step,
+  textarea,
+  placeholder,
+  maxLength,
+  rows,
   inputProps,
 }: InputFieldProps) => {
   return (
-    <div className={hidden ? "hidden" : "flex flex-col gap-2 w-full md:w-1/4"}>
+    <div
+      className={
+        hidden
+          ? "hidden"
+          : `flex flex-col gap-2 w-full md:${textarea ? "w-full" : "w-1/4"}`
+      }
+    >
       <label className="text-xs text-gray-500">{label}</label>
-      <input
-        type={type}
-        {...register(name)}
-        className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
-        {...inputProps}
-        defaultValue={defaultValue}
-      />
+      {textarea ? (
+        <textarea
+          {...register(name)}
+          defaultValue={defaultValue}
+          className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+          rows={rows}
+          maxLength={maxLength}
+          placeholder={placeholder}
+        />
+      ) : (
+        <input
+          type={type}
+          step={step}
+          {...register(name)}
+          className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+          {...inputProps}
+          defaultValue={defaultValue}
+          placeholder={placeholder}
+          maxLength={maxLength}
+        />
+      )}
+
       {error?.message && (
         <p className="text-xs text-red-400">{error.message}</p>
       )}

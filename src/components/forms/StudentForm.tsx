@@ -42,7 +42,7 @@ const StudentForm = ({
   });
 
   const [img, setImg] = useState<any>();
-
+  const [selectedGrade, setSelectedGrade] = useState<number | null>(1);
   const [state, formAction] = useFormState(
     type === "create" ? createstudent : updateStudent,
     {
@@ -71,6 +71,12 @@ const StudentForm = ({
   }, [router, setOpen, state, type]);
 
   const { grades, classes } = relatedData;
+
+  const filteredClasses =
+    selectedGrade !== null && selectedGrade !== undefined
+      ? classes.filter((c: any) => c.gradeId === selectedGrade)
+      : [];
+
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
       <h1 className="text-xl font-semibold">
@@ -201,6 +207,7 @@ const StudentForm = ({
             className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
             {...register("gradeId")}
             defaultValue={data?.gradeId}
+            onChange={(e) => setSelectedGrade(Number(e.target.value))}
           >
             {grades.map((grade: { id: number; level: number }) => (
               <option value={grade.id} key={grade.id}>
@@ -220,8 +227,9 @@ const StudentForm = ({
             className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
             {...register("classId")}
             defaultValue={data?.classId}
+            disabled={!selectedGrade}
           >
-            {classes.map(
+            {filteredClasses.map(
               (classItem: {
                 id: number;
                 name: string;

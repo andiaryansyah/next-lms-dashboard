@@ -1,7 +1,12 @@
 "use client";
 import {
+  deleteAnnouncement,
+  deleteAssignment,
   deleteClass,
+  deleteEvent,
   deleteExam,
+  deleteLesson,
+  deleteParent,
   deleteStudent,
   deleteSubject,
   deleteTeacher,
@@ -22,15 +27,15 @@ const deleteActionMap = {
   subject: deleteSubject,
   student: deleteStudent,
   teacher: deleteTeacher,
-  parent: deleteSubject,
+  parent: deleteParent,
   class: deleteClass,
-  lesson: deleteSubject,
+  lesson: deleteLesson,
   exam: deleteExam,
-  assignment: deleteSubject,
+  assignment: deleteAssignment,
   result: deleteSubject,
   attendance: deleteSubject,
-  event: deleteSubject,
-  announcement: deleteSubject,
+  event: deleteEvent,
+  announcement: deleteAnnouncement,
 };
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
@@ -49,6 +54,26 @@ const ClassForm = dynamic(() => import("./forms/ClassForm"), {
 });
 
 const ExamForm = dynamic(() => import("./forms/ExamForm"), {
+  loading: () => <h1>Loading ....</h1>,
+});
+
+const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"), {
+  loading: () => <h1>Loading ....</h1>,
+});
+
+const LessonForm = dynamic(() => import("./forms/LessonForm"), {
+  loading: () => <h1>Loading ....</h1>,
+});
+
+const ParentForm = dynamic(() => import("./forms/ParentForm"), {
+  loading: () => <h1>Loading ....</h1>,
+});
+
+const EventForm = dynamic(() => import("./forms/EventForm"), {
+  loading: () => <h1>Loading ....</h1>,
+});
+
+const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"), {
   loading: () => <h1>Loading ....</h1>,
 });
 
@@ -101,6 +126,49 @@ const forms: {
       relatedData={relatedData}
     />
   ),
+
+  assignment: (setOpen, type, data, relatedData) => (
+    <AssignmentForm
+      type={type}
+      data={data}
+      setOpen={setOpen}
+      relatedData={relatedData}
+    />
+  ),
+  lesson: (setOpen, type, data, relatedData) => (
+    <LessonForm
+      type={type}
+      data={data}
+      setOpen={setOpen}
+      relatedData={relatedData}
+    />
+  ),
+  parent: (setOpen, type, data, relatedData) => (
+    <ParentForm
+      type={type}
+      data={data}
+      setOpen={setOpen}
+      relatedData={relatedData}
+    />
+  ),
+
+  event: (setOpen, type, data, relatedData) => (
+    <EventForm
+      type={type}
+      data={data}
+      setOpen={setOpen}
+      relatedData={relatedData}
+    />
+  ),
+
+  announcement: (setOpen, type, data, relatedData) => (
+    <AnnouncementForm
+      type={type}
+      data={data}
+      setOpen={setOpen}
+      relatedData={relatedData}
+    />
+  ),
 };
 
 const FormModal = ({
@@ -113,11 +181,11 @@ const FormModal = ({
   const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
     type === "create"
-      ? "bg-pickYellow"
+      ? "bg-pickGreen"
       : type === "update"
       ? "bg-pickSky"
       : "bg-pickPurple";
-  console.log("related datas: " + JSON.stringify(relatedData));
+  // console.log("related datas: " + JSON.stringify(relatedData));
 
   const [open, setOpen] = useState(false);
 

@@ -57,7 +57,7 @@ const SingleStudentPage = async ({
                 <h1 className="text-xl font-semibold">
                   {student.name + " " + student.surname}
                 </h1>
-                {role === "admin" && (
+                {(role === "admin" || role === "student") && (
                   <FormContainer table="student" type="update" data={student} />
                 )}
               </div>
@@ -72,7 +72,7 @@ const SingleStudentPage = async ({
                 <div className="w-full md:w-1/2 lg:w-full xl:w-1/2 flex items-center gap-2">
                   <Image src="/date.png" alt="" width={14} height={14} />
                   <span>
-                    {new Intl.DateTimeFormat("en-US").format(student.birthday)}
+                    {new Intl.DateTimeFormat("id-ID").format(student.birthday)}
                   </span>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-full xl:w-1/2 flex items-center gap-2">
@@ -161,31 +161,31 @@ const SingleStudentPage = async ({
           <h1 className="text-xl font-semibold">Shortcuts</h1>
           <div className="mt-4 flex gap-4 flex-wrap text-xs text-gray-500">
             <Link
-              href={`/list/lessons?classId=${2}`}
+              href={`/list/lessons?classId=${student.class.id}`}
               className="p-4 rounded-md bg-pickSkyLight"
             >
               Student&apos;s Lessons
             </Link>
             <Link
-              href={`/list/teachers?classId=${2}`}
+              href={`/list/teachers?classId=${student.class.id}`}
               className="p-4 rounded-md bg-pickPurpleLight"
             >
               Student&apos;s Teachers
             </Link>
             <Link
-              href={`/list/exams?classId=${2}`}
+              href={`/list/exams?classId=${student.class.id}`}
               className="p-4 rounded-md bg-pickYellowLight"
             >
               Student&apos;s Exams
             </Link>
             <Link
-              href={`/list/assignments?classId=${2}`}
+              href={`/list/assignments?classId=${student.class.id}`}
               className="p-4 rounded-md bg-pickSkyLight"
             >
               Student&apos;s Assignments
             </Link>
             <Link
-              href={`/list/results?studentId=${"student2"}`}
+              href={`/list/results?studentId=${student.id}`}
               className="p-4 rounded-md bg-pink-50"
             >
               Student&apos; Results

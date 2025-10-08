@@ -29,7 +29,7 @@ const LoginPage = () => {
         >
           <h1 className="text-xl font-bold flex items-center gap-2">
             <Image src="/logo.png" alt="" width={24} height={24} />
-            LMS Arya
+            School Management Systems
           </h1>
           <h2 className="text-gray-400">Signin to your account</h2>
 

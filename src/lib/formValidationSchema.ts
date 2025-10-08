@@ -85,3 +85,80 @@ export const examSchema = z.object({
 });
 
 export type ExamInputs = z.infer<typeof examSchema>;
+
+export const assignmentSchema = z.object({
+  id: z.coerce.number().optional(),
+  title: z.string().min(1, { message: "Title name is required!" }),
+  startDate: z.coerce.date({ message: "Start time is required" }),
+  dueDate: z.coerce.date({ message: "End time is required" }),
+  lessonId: z.coerce.number({ message: "Lesson is required" }),
+});
+
+export type AssignmentInputs = z.infer<typeof assignmentSchema>;
+
+export const lessonSchema = z.object({
+  id: z.coerce.number().optional(),
+  subjectId: z.coerce.number(),
+  teacherId: z.coerce.string(),
+  classId: z.coerce.number().min(1, { message: "Class Id is required" }),
+  name: z.string().min(1, { message: "Subject name is required!" }),
+  // startTime: z.coerce.date({ message: "Start time is required" }),
+  startTime: z.coerce.string({ message: "Start time is required" }),
+  // endTime: z.coerce.date({ message: "End time is required" }),
+  endTime: z.coerce.string({ message: "End time is required" }),
+  day: z.enum(["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"], {
+    message: "Day is required",
+  }),
+});
+
+export type LessonInputs = z.infer<typeof lessonSchema>;
+
+export const parentSchema = z.object({
+  id: z.string().optional(),
+  username: z
+    .string()
+    .min(3, { message: "Username at least 3 characters long!" })
+    .max(20, { message: "Username at most 20 characters long!" }),
+  email: z
+    .string()
+    .email({ message: "Invaled email address !" })
+    .optional()
+    .or(z.literal("")),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long!" })
+    .optional()
+    .or(z.literal("")),
+  name: z.string().min(1, { message: "First name is required!" }),
+  surname: z.string().min(1, { message: "Last name is required!" }),
+  phone: z.string(),
+  address: z.string(),
+});
+
+export type ParentInputs = z.infer<typeof parentSchema>;
+
+export const eventSchema = z.object({
+  id: z.coerce.number().optional(),
+  title: z.string().min(1, { message: "Title is required!" }),
+  description: z.string().min(1, { message: "Description is required!" }),
+  startTime: z.coerce.date({ message: "Start time is required" }),
+  endTime: z.coerce.date({ message: "End time is required" }),
+  classId: z.coerce.number().optional(),
+});
+export type EventInputs = z.infer<typeof eventSchema>;
+
+export const announcementSchema = z.object({
+  id: z.coerce.number().optional(),
+  title: z.string().min(1, { message: "Title is required!" }),
+  description: z.string().min(1, { message: "Description is required!" }),
+  date: z.coerce.date({ message: "Date is required" }),
+  classId: z.coerce.number().optional(),
+});
+export type AnnouncementInputs = z.infer<typeof announcementSchema>;
+
+export const resultSchema = z.object({
+  id: z.coerce.number().optional(),
+  name: z.string().min(1, { message: "Subject name is required!" }),
+  teachers: z.array(z.string()),
+});
+export type ResultInputs = z.infer<typeof resultSchema>;

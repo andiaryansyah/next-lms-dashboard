@@ -20,6 +20,8 @@ const config: Config = {
         pickPurpleLight: "#F1F0FF",
         pickYellow: "#FAE27C",
         pickYellowLight: "#FEFCE8",
+        pickGreen: "#8CD869",
+        pickGreenLight: "#BCEEA5",
       },
     },
   },
