@@ -158,7 +158,15 @@ export type AnnouncementInputs = z.infer<typeof announcementSchema>;
 
 export const resultSchema = z.object({
   id: z.coerce.number().optional(),
-  name: z.string().min(1, { message: "Subject name is required!" }),
-  teachers: z.array(z.string()),
+  score: z.coerce.number().min(1, { message: "Score is required!" }),
+  examId: z.coerce.number().optional(),
+  assignmentId: z.coerce.number().optional(),
+  studentId: z.coerce.string(),
 });
 export type ResultInputs = z.infer<typeof resultSchema>;
+
+export const messageSchema = z.object({
+  id: z.coerce.number().optional(),
+  content: z.coerce.string().optional(),
+});
+export type MessageInputs = z.infer<typeof messageSchema>;

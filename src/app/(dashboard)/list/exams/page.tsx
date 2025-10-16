@@ -97,11 +97,9 @@ const ExamListPage = async ({
       if (value !== undefined) {
         switch (key) {
           case "classId":
-            // query.lesson.classId = parseInt(value);
             query.lesson.classId = parseInt(value);
             break;
           case "teacherId":
-            // query.lesson.teacherId = value;
             query.lesson.teacherId = value;
             break;
           case "search":
@@ -115,13 +113,14 @@ const ExamListPage = async ({
       }
     }
   }
-
   //ROLE CONDITIONS
   switch (role) {
     case "admin":
       break;
     case "teacher":
-      query.lesson.teacherId = userId!;
+      if (!searchParams?.teacherId) {
+        query.lesson.teacherId = userId!;
+      }
       break;
     case "student":
       query.lesson.class = {
@@ -168,7 +167,7 @@ const ExamListPage = async ({
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold hidden md:block">All Exams</h1>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-          <TableSearch />
+          <TableSearch className="p-2" />
           <div className="flex items-center gap-4 self-end">
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-pickGreen">
               <Image src="/filter.png" alt="filter" width={14} height={14} />

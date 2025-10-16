@@ -127,12 +127,12 @@ const LessonForm = ({
         <InputField
           label="Start Time"
           name="startTime"
-          // defaultValue={data?.startTime}
-          defaultValue={
-            data?.startTime
-              ? new Date(data.startTime).toISOString().substring(11, 19)
-              : ""
-          }
+          defaultValue={data?.startTime}
+          // defaultValue={
+          //   data?.startTime
+          //     ? new Date(data.startTime).toISOString().substring(11, 19)
+          //     : ""
+          // }
           register={register}
           error={errors.startTime}
           type="time"
@@ -140,12 +140,12 @@ const LessonForm = ({
         <InputField
           label="End Time"
           name="endTime"
-          // defaultValue={data?.endTime}
-          defaultValue={
-            data?.endTime
-              ? new Date(data.endTime).toISOString().substring(11, 19)
-              : ""
-          }
+          defaultValue={data?.endTime}
+          // defaultValue={
+          //   data?.endTime
+          //     ? new Date(data.endTime).toISOString().substring(11, 19)
+          //     : ""
+          // }
           register={register}
           error={errors.endTime}
           type="time"
@@ -157,7 +157,7 @@ const LessonForm = ({
           <select
             className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
             {...register("classId")}
-            defaultValue={data?.classes}
+            defaultValue={data?.classId}
           >
             {classes.map((classItem: { id: string; name: string }) => (
               <option
@@ -203,7 +203,7 @@ const LessonForm = ({
       {state.error && (
         <span className="text-red-500">Something went wrong!</span>
       )}
-      <button className="bg-blue-400 text-white p-2 rounded-md">
+      <button className="bg-blue-400 text-white p-2 rounded-md hover:bg-blue-500">
         {type === "create" ? "Create" : "Update"}
       </button>
     </form>

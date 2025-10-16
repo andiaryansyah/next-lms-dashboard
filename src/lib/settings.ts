@@ -9,7 +9,7 @@ export const routerAccessMap: RouterAccessMap = {
   "/student(.*)": ["student"],
   "/teacher(.*)": ["teacher"],
   "/parent(.*)": ["parent"],
-  "/list/teachers": ["admin", "student"],
+  "/list/teachers": ["admin", "teacher"],
   "/list/students": ["admin", "teacher"],
   "/list/parents": ["admin", "teacher"],
   "/list/subjects": ["admin"],

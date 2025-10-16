@@ -13,6 +13,9 @@ datasource db {
 model Admin {
   id String @id
   username String @unique
+
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id])
 }
 
 model Student {
@@ -35,6 +38,9 @@ model Student {
   attendance Attendance[]
   results Result[]
   birthday DateTime
+
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id])
 }
 
 model Teacher {
@@ -52,6 +58,9 @@ model Teacher {
   lessons Lesson[]
   classes Class[]
   birthday DateTime
+
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id])
 }
 
 model Parent {
@@ -64,6 +73,9 @@ model Parent {
   address String
   createdAt DateTime @default(now())
   students Student[]
+
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id])
 }
 
 model Grade {
@@ -173,6 +185,42 @@ id Int @id @default(autoincrement())
   classId Int?
   class Class? @relation(fields: [classId], references: [id])
  
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  content String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  displayName String
+
+  senderId   String
+  receiverId String
+
+  sender   User @relation("MessagesSent", fields: [senderId], references: [id])
+  receiver User @relation("MessagesReceived", fields: [receiverId], references: [id])
+}
+
+model User {
+  id          String   @id @default(cuid())
+  username    String   @unique
+  role        Role
+  displayName String
+
+  messagesSent     Message[] @relation("MessagesSent")
+  messagesReceived Message[] @relation("MessagesReceived")
+
+  admin    Admin?
+  teacher  Teacher?
+  student  Student?
+  parent   Parent?
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+  PARENT
 }
 
 enum UserGender {

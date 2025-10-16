@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const TableSearch = () => {
+const TableSearch = ({ className }: { className?: string }) => {
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,7 +26,7 @@ const TableSearch = () => {
       <input
         type="text"
         placeholder="Search..."
-        className="w-[200px] p-2 bg-transparent outline-none"
+        className={`w-[200px] bg-transparent outline-none ${className}`}
       />
     </form>
   );

@@ -1,6 +1,5 @@
 // import { auth } from "@clerk/nextjs/server";
-import { headers } from "next/headers";
-import { auth } from "@clerk/nextjs/server";
+// import { headers } from "next/headers";
 
 // const { sessionClaims } = auth();
 // export const userRole = (sessionClaims?.metadata as { role?: string })?.role;
@@ -11,13 +10,13 @@ import { auth } from "@clerk/nextjs/server";
 // export const role = headers().get("x-user-role");
 // export const currentUserId = headers().get("x-user-id");
 
-export function getAuthHeaders() {
-  const header = headers();
-  const userId = header.get("x-user-id") ?? null;
-  const role = header.get("x-user-role") ?? "guest";
+// export function getAuthHeaders() {
+//   const header = headers();
+//   const userId = header.get("x-user-id") ?? null;
+//   const role = header.get("x-user-role") ?? "guest";
 
-  return { userId, role };
-}
+//   return { userId, role };
+// }
 
 const currentWorkWeek = () => {
   const today = new Date();

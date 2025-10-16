@@ -8,6 +8,7 @@ import {
   EventInputs,
   ExamInputs,
   LessonInputs,
+  MessageInputs,
   ParentInputs,
   ResultInputs,
   StudentInputs,
@@ -15,7 +16,8 @@ import {
   TeacherInputs,
 } from "./formValidationSchema";
 import { prisma } from "./prisma";
-import { auth, clerkClient } from "@clerk/nextjs/server";
+import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 type currentState = { success: boolean; error: boolean };
 
@@ -177,6 +179,7 @@ export const createTeacher = async (
             id: parseInt(subjectId),
           })),
         },
+        userId: user.id,
       },
     });
 
@@ -224,6 +227,7 @@ export const updateTeacher = async (
             id: parseInt(subjectId),
           })),
         },
+        userId: user.id,
       },
     });
     // revalidatePath("/list/teachers");
@@ -295,6 +299,7 @@ export const createstudent = async (
         gradeId: data.gradeId,
         classId: data.classId,
         parentId: data.parentId,
+        userId: user.id,
       },
     });
 
@@ -340,6 +345,7 @@ export const updateStudent = async (
         gradeId: data.gradeId,
         classId: data.classId,
         parentId: data.parentId,
+        userId: user.id,
       },
     });
     // revalidatePath("/list/teachers");
@@ -684,6 +690,7 @@ export const createParent = async (
         email: data.email || null,
         phone: data.phone,
         address: data.address,
+        userId: user.id,
       },
     });
 
@@ -723,6 +730,7 @@ export const updateParent = async (
         email: data.email || null,
         phone: data.phone,
         address: data.address,
+        userId: user.id,
       },
     });
     // revalidatePath("/list/parents");
@@ -761,12 +769,12 @@ export const createResult = async (
   data: ResultInputs
 ) => {
   try {
-    await prisma.subject.create({
+    await prisma.result.create({
       data: {
-        name: data.name,
-        teachers: {
-          connect: data.teachers.map((teacherId) => ({ id: teacherId })),
-        },
+        score: data.score,
+        examId: data.examId || null,
+        assignmentId: data.assignmentId || null,
+        studentId: data.studentId,
       },
     });
 
@@ -783,13 +791,13 @@ export const updateResult = async (
   data: ResultInputs
 ) => {
   try {
-    await prisma.subject.update({
+    await prisma.result.update({
       where: { id: data.id },
       data: {
-        name: data.name,
-        teachers: {
-          set: data.teachers.map((teacherId) => ({ id: teacherId })),
-        },
+        score: data.score,
+        examId: data.examId || null,
+        assignmentId: data.assignmentId || null,
+        studentId: data.studentId,
       },
     });
 
@@ -807,7 +815,7 @@ export const deleteResult = async (
 ) => {
   const id = data.get("id") as string;
   try {
-    await prisma.subject.delete({
+    await prisma.result.delete({
       where: { id: parseInt(id) },
     });
 
@@ -948,6 +956,39 @@ export const deleteAnnouncement = async (
     await prisma.announcement.delete({
       where: {
         id: parseInt(id),
+      },
+    });
+
+    // revalidatePath("/list/announcements");
+    return { success: true, error: false };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: true };
+  }
+};
+
+// MESSAGE ACTIONS
+
+export const createMessage = async (
+  currentState: currentState,
+  data: FormData
+) => {
+  const user = await currentUser();
+
+  const content = data.get("content") as string;
+  const receiverId = data.get("receiverId") as string;
+  const displayName = data.get("displayName") as string;
+
+  if (content === "") {
+    return { success: false, error: true };
+  }
+  try {
+    await prisma.message.create({
+      data: {
+        content: content,
+        senderId: user?.id!,
+        receiverId: receiverId,
+        displayName: displayName,
       },
     });
 

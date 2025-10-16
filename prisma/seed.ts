@@ -3,16 +3,36 @@ const prisma = new PrismaClient();
 
 async function main() {
   // ADMIN
+  await prisma.user.createMany({
+    data: [
+      {
+        id: "admin1",
+        username: "admin1",
+        role: "ADMIN",
+        displayName: "Admin 1",
+      },
+      {
+        id: "admin2",
+        username: "admin2",
+        role: "ADMIN",
+        displayName: "Admin 2",
+      },
+    ],
+    skipDuplicates: true,
+  });
+
   await prisma.admin.create({
     data: {
       id: "admin1",
       username: "admin1",
+      userId: "admin1",
     },
   });
   await prisma.admin.create({
     data: {
       id: "admin2",
       username: "admin2",
+      userId: "admin2",
     },
   });
 
@@ -56,9 +76,22 @@ async function main() {
 
   // TEACHER
   for (let i = 1; i <= 15; i++) {
+    const userId = `teacher${i}`;
+    await prisma.user.upsert({
+      where: { id: userId },
+      update: {},
+      create: {
+        id: userId,
+        username: userId,
+        role: "TEACHER",
+        displayName: `Teacher ${i}`,
+      },
+    });
+
     await prisma.teacher.create({
       data: {
         id: `teacher${i}`, // Unique ID for the teacher
+        userId: `teacher${i}`,
         username: `teacher${i}`,
         name: `TName${i}`,
         surname: `TSurname${i}`,
@@ -97,9 +130,22 @@ async function main() {
 
   // PARENT
   for (let i = 1; i <= 25; i++) {
+    const userId = `parentId${i}`;
+    await prisma.user.upsert({
+      where: { id: userId },
+      update: {},
+      create: {
+        id: userId,
+        username: userId,
+        role: "PARENT",
+        displayName: `Parent ${i}`,
+      },
+    });
+
     await prisma.parent.create({
       data: {
         id: `parentId${i}`,
+        userId: `parentId${i}`,
         username: `parentId${i}`,
         name: `PName ${i}`,
         surname: `PSurname ${i}`,
@@ -112,9 +158,22 @@ async function main() {
 
   // STUDENT
   for (let i = 1; i <= 50; i++) {
+    const userId = `student${i}`;
+    await prisma.user.upsert({
+      where: { id: userId },
+      update: {},
+      create: {
+        id: userId,
+        username: userId,
+        role: "STUDENT",
+        displayName: `Student ${i}`,
+      },
+    });
+
     await prisma.student.create({
       data: {
         id: `student${i}`,
+        userId: `student${i}`,
         username: `student${i}`,
         name: `SName${i}`,
         surname: `SSurname ${i}`,
@@ -204,6 +263,44 @@ async function main() {
       },
     });
   }
+
+  // MESSAGE
+  const user1 = await prisma.user.upsert({
+    where: { username: "alberto" },
+    update: {},
+    create: {
+      username: "alberto",
+      displayName: "Alberto",
+      role: "TEACHER",
+    },
+  });
+
+  const user2 = await prisma.user.upsert({
+    where: { username: "gerry" },
+    update: {},
+    create: {
+      username: "gerry",
+      displayName: "Gerry Cleave",
+      role: "STUDENT",
+    },
+  });
+
+  await prisma.message.createMany({
+    data: [
+      {
+        content: "Halo gerry, besok jangan lupa tugasnya ya!",
+        senderId: user1.id,
+        receiverId: user2.id,
+        displayName: user1.displayName,
+      },
+      {
+        content: "Siap Pak, sudah saya kerjakan!",
+        senderId: user2.id,
+        receiverId: user1.id,
+        displayName: user2.displayName,
+      },
+    ],
+  });
 
   console.log("Seeding completed successfully.");
 }
