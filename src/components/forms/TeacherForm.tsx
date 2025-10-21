@@ -63,10 +63,10 @@ const TeacherForm = ({
   const { teacherSubjects } = relatedData;
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-xl font-semibold dark:text-zinc-100">
         {type === "create" ? "Create a new teacher" : "Update the teacher"}
       </h1>
-      <span className="text-xs text-gray-400 font-medium">
+      <span className="text-xs text-gray-400 font-medium dark:text-zinc-100">
         Authentication Imformation
       </span>
       <div className="flex justify-between flex-wrap gap-4">
@@ -94,9 +94,36 @@ const TeacherForm = ({
           error={errors.password}
         />
       </div>
-      <span className="text-xs text-gray-400 font-medium">
+      <span className="text-xs text-gray-400 font-medium dark:text-zinc-100">
         Personal Information
       </span>
+      <div>
+        <CldUploadWidget
+          uploadPreset="school"
+          onSuccess={(result, { widget }) => {
+            setImg(result.info);
+            widget.close;
+          }}
+        >
+          {({ open }) => {
+            return (
+              <div
+                className="text-xs text-gray-500 dark:text-zinc-100 flex items-center gap-2 cursor-pointer"
+                onClick={() => open()}
+              >
+                <Image
+                  src="/upload.png"
+                  alt="upload"
+                  width={28}
+                  height={28}
+                  className="invert dark:brightness-0"
+                />
+                <span>Upload a photo</span>
+              </div>
+            );
+          }}
+        </CldUploadWidget>
+      </div>
       <div className="flex justify-between flex-wrap gap-4">
         <InputField
           label="First Name"
@@ -147,7 +174,7 @@ const TeacherForm = ({
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Gender</label>
           <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-800"
             {...register("gender")}
             defaultValue={data?.gender}
           >
@@ -163,7 +190,7 @@ const TeacherForm = ({
           <label className="text-xs text-gray-500">Subjects</label>
           <select
             multiple
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-800"
             {...register("subjects")}
             defaultValue={data?.gender}
           >
@@ -178,31 +205,11 @@ const TeacherForm = ({
             <p className="text-xs text-red-400">{errors.subjects.message}</p>
           )}
         </div>
-
-        <CldUploadWidget
-          uploadPreset="school"
-          onSuccess={(result, { widget }) => {
-            setImg(result.info);
-            widget.close;
-          }}
-        >
-          {({ open }) => {
-            return (
-              <div
-                className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
-                onClick={() => open()}
-              >
-                <Image src="/upload.png" alt="upload" width={28} height={28} />
-                <span>Upload a photo</span>
-              </div>
-            );
-          }}
-        </CldUploadWidget>
       </div>
       {state.error && (
         <span className="text-red-500">Something went wrong!</span>
       )}
-      <button className="bg-blue-400 text-white p-2 rounded-md">
+      <button className="bg-blue-400 hover:bg-blue-500 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>
     </form>

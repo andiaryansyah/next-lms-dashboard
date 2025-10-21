@@ -3,18 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import InputField from "../InputField";
-import {
-  ClassInputs,
-  classSchema,
-  SubjectInputs,
-  subjectSchema,
-} from "@/lib/formValidationSchema";
-import {
-  createClass,
-  createSubject,
-  updateClass,
-  updateSubject,
-} from "@/lib/actions";
+import { ClassInputs, classSchema } from "@/lib/formValidationSchema";
+import { createClass, updateClass } from "@/lib/actions";
 import { useFormState } from "react-dom";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { toast } from "react-toastify";
@@ -70,10 +60,10 @@ const ClassForm = ({
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-xl font-semibold dark:text-zinc-100">
         {type === "create" ? "Create a new Subject" : "Update the Subject"}
       </h1>
-      <span className="text-xs text-gray-400 font-medium">
+      <span className="text-xs text-gray-400 font-medium dark:text-zinc-100">
         Authentication Imformation
       </span>
       <div className="flex justify-between flex-wrap gap-4">
@@ -105,7 +95,7 @@ const ClassForm = ({
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Supervisor</label>
           <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-900 dark:text-zinc-100"
             {...register("supervisorId")}
             defaultValue={data?.teachers}
           >
@@ -132,7 +122,7 @@ const ClassForm = ({
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Grade</label>
           <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-900 dark:text-zinc-100"
             {...register("gradeId")}
             defaultValue={data?.gradeId}
           >

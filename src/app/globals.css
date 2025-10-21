@@ -107,3 +107,28 @@
   color: gray !important;
   margin-bottom: 5px;
 }
+
+.dark body {
+  @apply bg-gray-900 text-gray-100;
+}
+
+.dark .rbc-time-view {
+  border-color: #050505 !important;
+}
+
+.dark .rbc-timeslot-group {
+  background-color: #050505 !important;
+}
+
+.dark .rbc-event {
+  color: white !important;
+  border: none !important;
+  padding: 10px !important;
+  margin: 10px !important;
+  width: 99% !important;
+  /* height: auto !important; */
+}
+
+.dark .rbc-time-slot {
+  flex: none !important;
+}

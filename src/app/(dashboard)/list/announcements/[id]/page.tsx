@@ -23,17 +23,19 @@ const SingleAnnouncementPage = async ({
   }
 
   return (
-    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+    <div className="bg-white dark:bg-gray-900 dark:text-zinc-100 p-4 rounded-md flex-1 m-4 mt-0">
       <div>
         <nav className="text-sm text-gray-600 mb-4">
           <Link
             href="/list/announcements"
-            className="hover:text-blue-600 transition-colors"
+            className="hover:text-blue-600 transition-colors dark:text-zinc-400 dark:hover:text-blue-400"
           >
             <span className="text-lg font-semibold">All Announcements</span>
           </Link>
-          <span className="text-black mx-2">/</span>
-          <span className="text-black text-lg font-semibold">Announcement</span>
+          <span className="text-black mx-2 dark:text-zinc-100">/</span>
+          <span className="text-black text-lg font-semibold dark:text-zinc-100">
+            Announcement
+          </span>
         </nav>
       </div>
 

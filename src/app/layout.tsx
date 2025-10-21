@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getCurrentScheme } from "@/lib/colorSheme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,14 +13,16 @@ export const metadata: Metadata = {
   description: "Next.js School Management System",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const scheme = await getCurrentScheme();
+
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className={scheme === "dark" ? "dark" : ""}>
         <body className={inter.className}>
           {children}
           <ToastContainer position="bottom-right" theme="dark" />

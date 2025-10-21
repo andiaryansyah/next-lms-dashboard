@@ -21,39 +21,41 @@ const LoginPage = () => {
   }, [user, router]);
 
   return (
-    <div className="h-screen flex items-center justify-center bg-pickSkyLight">
+    <div className="h-screen flex items-center justify-center bg-pickSkyLight dark:bg-gray-800">
       <SignIn.Root>
         <SignIn.Step
           name="start"
-          className="bg-white p-12 rounded-md shadow-2xl flex flex-col gap-2"
+          className="bg-white dark:bg-gray-900 p-12 rounded-md shadow-2xl flex flex-col gap-2"
         >
           <h1 className="text-xl font-bold flex items-center gap-2">
             <Image src="/logo.png" alt="" width={24} height={24} />
             School Management Systems
           </h1>
-          <h2 className="text-gray-400">Signin to your account</h2>
+          <h2 className="text-gray-400 dark:text-zinc-100">
+            Signin to your account
+          </h2>
 
           <Clerk.GlobalError className="text-red-400 text-sm" />
           <Clerk.Field name="identifier" className="flex flex-col gap-2">
-            <Clerk.Label className="text-xs text-gray-500">
+            <Clerk.Label className="text-xs text-gray-500 dark:text-zinc-300">
               Username
             </Clerk.Label>
             <Clerk.Input
               type="text"
               required
-              className="p-2 rounded-md ring-1 ring-gray-300"
+              className="p-2 rounded-md ring-1 ring-gray-300 dark:bg-gray-800"
             />
             <Clerk.FieldError className="text-red-400 text-sm" />
           </Clerk.Field>
 
           <Clerk.Field name="password" className="flex flex-col gap-2">
-            <Clerk.Label className="text-xs text-gray-500">
+            <Clerk.Label className="text-xs text-gray-500 dark:text-zinc-300">
               Password
             </Clerk.Label>
             <Clerk.Input
               type="password"
               required
-              className="p-2 rounded-md ring-1 ring-gray-300"
+              className="p-2 rounded-md ring-1 ring-gray-300 dark:bg-gray-800"
             />
             <Clerk.FieldError className="text-red-400 text-sm" />
           </Clerk.Field>

@@ -63,7 +63,8 @@ const TeacherListPage = async ({
   const renderRow = (item: TeacherList) => (
     <tr
       key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-pickPurpleLight"
+      className="border-b border-gray-200 dark:border-gray-900 even:bg-slate-50 dark:even:bg-gray-800 text-sm
+       hover:bg-pickPurpleLight dark:hover:bg-gray-400 dark:hover:text-gray-900"
     >
       <td className="flex items-center gap-4 p-4">
         <Image
@@ -74,7 +75,7 @@ const TeacherListPage = async ({
           className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
         />
         <div className="flex flex-col">
-          <h3 className="font-semibold">{item.name}</h3>
+          <h3 className="font-semibold ">{item.name}</h3>
           <h4 className="text-xs text-gray-500">{item.email}</h4>
         </div>
       </td>
@@ -91,7 +92,13 @@ const TeacherListPage = async ({
         <div className="flex items-center gap-2">
           <Link href={`/list/teachers/${item.id}`}>
             <button className="w-7 h-7 flex items-center justify-center rounded-full bg-pickYellow">
-              <Image src="/viewYellow.png" alt="" width={20} height={20} />
+              <Image
+                src="/viewYellow.png"
+                alt=""
+                width={20}
+                height={20}
+                className="invert dark:brightness-0"
+              />
             </button>
           </Link>
           {role === "admin" && (
@@ -146,7 +153,7 @@ const TeacherListPage = async ({
   ]);
 
   return (
-    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+    <div className="bg-white dark:bg-gray-900 p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold hidden md:block">All Teachers</h1>

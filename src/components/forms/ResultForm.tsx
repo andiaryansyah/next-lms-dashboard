@@ -109,10 +109,10 @@ const ExamForm = ({
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-xl font-semibold dark:text-zinc-100">
         {type === "create" ? "Create a new Result" : "Update the Result"}
       </h1>
-      <span className="text-xs text-gray-400 font-medium">
+      <span className="text-xs text-gray-400 font-medium dark:text-zinc-100">
         Authentication Imformation
       </span>
       <div className="flex justify-between flex-wrap gap-4">
@@ -130,7 +130,7 @@ const ExamForm = ({
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Title</label>
           <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:text-zinc-100 dark:bg-gray-800"
             defaultValue={title}
             onChange={handleChange}
           >
@@ -143,7 +143,7 @@ const ExamForm = ({
           <div className="flex flex-col gap-2 w-full md:w-1/4">
             <label className="text-xs text-gray-500">Choose {title}</label>
             <select
-              className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+              className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:text-zinc-100 dark:bg-gray-800"
               {...register("examId")}
               defaultValue={data?.examId}
               onChange={handleChangeExamId}
@@ -164,7 +164,7 @@ const ExamForm = ({
           <div className="flex flex-col gap-2 w-full md:w-1/4">
             <label className="text-xs text-gray-500">Choose {title}</label>
             <select
-              className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+              className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:text-zinc-100 dark:bg-gray-800"
               {...register("assignmentId")}
               defaultValue={data?.assignmentId}
               onChange={handleChangeAssignmentId}
@@ -187,7 +187,7 @@ const ExamForm = ({
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Student</label>
           <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:text-zinc-100 dark:bg-gray-800"
             {...register("studentId")}
             defaultValue={data?.studentId}
           >

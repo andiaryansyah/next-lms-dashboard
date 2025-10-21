@@ -19,7 +19,9 @@ const EventCalendar = () => {
     }
   }, [value, router]);
 
-  return <Calendar onChange={onChange} value={value} />;
+  return (
+    <Calendar onChange={onChange} value={value} className="dark:bg-gray-900" />
+  );
 };
 
 export default EventCalendar;

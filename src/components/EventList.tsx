@@ -62,7 +62,7 @@ const EventList = async ({ dateParam }: { dateParam: string | undefined }) => {
   return data.map((event) => (
     <div
       className="p-5 rounded-md border-2 border-gray-100 border-t-4
-             odd:border-t-pickSky even:border-t-pickPurple"
+             odd:border-t-pickSky even:border-t-pickPurple dark:bg-gray-900"
       key={event.id}
     >
       <div className="flex items-center justify-between">

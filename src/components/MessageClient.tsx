@@ -66,9 +66,9 @@ export default function MessagesPageClient({
   }, [users]);
 
   return (
-    <div className="h-screen bg-white m-4 flex flex-col md:flex-row">
+    <div className="h-screen bg-white dark:bg-gray-900 m-4 flex flex-col md:flex-row rounded-lg">
       {/* LEFT */}
-      <div className="w-full p-4 bg-white lg:w-1/3 flex flex-col gap-8">
+      <div className="w-full p-4 bg-white dark:bg-gray-900  lg:w-1/3 flex flex-col gap-8 rounded-lg">
         <div className="h-full flex-grow rounded border p-4 shadow">
           <TableSearchMessage />
           <div className="overflow-y-auto h-[calc(100vh-150px)] mt-6">
@@ -76,10 +76,10 @@ export default function MessagesPageClient({
               <div
                 key={user.id}
                 onClick={() => setSelectedUser(user)}
-                className={`flex items-center p-4 gap-4 cursor-pointer rounded-lg transition-all ${
+                className={`flex items-center p-4 gap-4 cursor-pointer rounded-lg transition-all mt-2  ${
                   selectedUser?.id === user.id
-                    ? "bg-blue-100"
-                    : "hover:bg-gray-100"
+                    ? "bg-blue-100 dark:text-gray-900"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-300 dark:hover:text-gray-900 "
                 }`}
               >
                 <Image
@@ -100,7 +100,7 @@ export default function MessagesPageClient({
       </div>
 
       {/* RIGHT */}
-      <div className="w-full p-4 lg:w-2/3 flex flex-col gap-8 bg-slate-100">
+      <div className="w-full p-4 lg:w-2/3 flex flex-col gap-8 bg-slate-100 dark:bg-gray-900 rounded-lg">
         {selectedUser ? (
           <div className="flex h-full flex-col gap-4">
             <div className="h-screen flex-grow overflow-hidden rounded border p-4 shadow">

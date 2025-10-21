@@ -79,10 +79,10 @@ const StudentForm = ({
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-xl font-semibold dark:text-zinc-100">
         {type === "create" ? "Create a new student" : "Update the student"}
       </h1>
-      <span className="text-xs text-gray-400 font-medium">
+      <span className="text-xs text-gray-400 font-medium dark:text-zinc-100">
         Authentication Imformation
       </span>
       <div className="flex justify-between flex-wrap gap-4">
@@ -110,7 +110,7 @@ const StudentForm = ({
           error={errors.password}
         />
       </div>
-      <span className="text-xs text-gray-400 font-medium">
+      <span className="text-xs text-gray-400 font-medium dark:text-zinc-100">
         Personal Information
       </span>
       <CldUploadWidget
@@ -123,10 +123,16 @@ const StudentForm = ({
         {({ open }) => {
           return (
             <div
-              className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
+              className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer dark:text-zinc-100"
               onClick={() => open()}
             >
-              <Image src="/upload.png" alt="upload" width={28} height={28} />
+              <Image
+                src="/upload.png"
+                alt="upload"
+                width={28}
+                height={28}
+                className="invert dark:brightness-0"
+              />
               <span>Upload a photo</span>
             </div>
           );
@@ -189,7 +195,7 @@ const StudentForm = ({
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Gender</label>
           <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-900"
             {...register("gender")}
             defaultValue={data?.gender}
           >
@@ -204,7 +210,7 @@ const StudentForm = ({
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Grade</label>
           <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-900"
             {...register("gradeId")}
             defaultValue={data?.gradeId}
             onChange={(e) => setSelectedGrade(Number(e.target.value))}
@@ -224,7 +230,7 @@ const StudentForm = ({
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Class</label>
           <select
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-900"
             {...register("classId")}
             defaultValue={data?.classId}
             disabled={!selectedGrade}

@@ -59,7 +59,7 @@ const MessageForm = ({
             Message
           </label>
           <input
-            className="w-full rounded border-black/20 p-2"
+            className="w-full rounded border-black/20 p-2 dark:bg-gray-800"
             {...register("content")}
             id="content"
             name="content"

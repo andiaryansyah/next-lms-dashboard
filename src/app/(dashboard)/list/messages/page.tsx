@@ -18,10 +18,7 @@ const MessagesPage = async ({
     prisma.teacher.findMany({
       where: query
         ? {
-            OR: [
-              { name: { contains: query, mode: "insensitive" } },
-              // { id: { contains: query, mode: "insensitive" } },
-            ],
+            OR: [{ name: { contains: query, mode: "insensitive" } }],
           }
         : {
             user: {
@@ -37,10 +34,7 @@ const MessagesPage = async ({
     prisma.student.findMany({
       where: query
         ? {
-            OR: [
-              { name: { contains: query, mode: "insensitive" } },
-              // { id: { contains: query, mode: "insensitive" } },
-            ],
+            OR: [{ name: { contains: query, mode: "insensitive" } }],
           }
         : {
             user: {

@@ -224,7 +224,7 @@ const FormModal = ({
     return type === "delete" && id ? (
       <form action={formAction} className="p-4 flex flex-col gap-4">
         <input type="text | number" name="id" value={id} hidden />
-        <span className="text-center font-medium">
+        <span className="text-center font-medium dark:text-zinc-100">
           All data will be lost. Are you sure you want to delete this {table}?
         </span>
         <button className="bg-red-700 text-white py-2 px-4 rounded-md border-none w-max self-center">
@@ -244,11 +244,17 @@ const FormModal = ({
         className={`${size} flex items-center justify-center rounded-full ${bgColor}`}
         onClick={() => setOpen(true)}
       >
-        <Image src={`/${type}.png`} alt={type} width={16} height={16} />
+        <Image
+          src={`/${type}.png`}
+          alt={type}
+          width={16}
+          height={16}
+          // className="invert dark:brightness-0"
+        />
       </button>
       {open && (
         <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div className="bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]">
+          <div className="bg-white dark:bg-gray-900 p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]">
             <Form />
             <div
               className="absolute top-4 right-4 cursor-pointer"

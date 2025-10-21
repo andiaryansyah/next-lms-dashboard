@@ -52,7 +52,7 @@ const AttendanceChartContainer = async () => {
   }));
 
   return (
-    <div className="bg-white rounded-lg p-4 h-full">
+    <div className="bg-white dark:bg-gray-900 rounded-lg p-4 h-full">
       <div className="flex justify-between items-center">
         <h1 className="text-lg font-semibold">Attendance</h1>
         <Image src="/moreDark.png" alt="" width={20} height={20} />

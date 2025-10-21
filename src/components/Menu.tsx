@@ -89,7 +89,7 @@ const Menu = async () => {
           icon: "/message.png",
           label: "Messages",
           href: "/list/messages",
-          visible: ["admin", "teacher", "student", "parent"],
+          visible: ["teacher", "student", "parent"],
         },
         {
           icon: "/announcement.png",
@@ -128,7 +128,7 @@ const Menu = async () => {
     <div className="mt-4 text-sm">
       {menuItems.map((i) => (
         <div className="flex flex-col gap-2" key={i.title}>
-          <span className="hidden lg:block text-gray-400 font-light my-4">
+          <span className="hidden lg:block text-gray-400 dark:text-white font-light my-4">
             {i.title}
           </span>
           {i.items.map((item) => {
@@ -138,10 +138,16 @@ const Menu = async () => {
                   <Link
                     href={item.href}
                     key={item.label}
-                    className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 
-                  py-2 md:px-2 rounded-md hover:bg-pickSkyLight"
+                    className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 dark:text-white
+                  py-2 md:px-2 rounded-md hover:bg-pickSkyLight dark:hover:bg-gray-700 cursor-pointer"
                   >
-                    <Image src={item.icon} alt="" width={20} height={20} />
+                    <Image
+                      src={item.icon}
+                      alt=""
+                      width={20}
+                      height={20}
+                      className="invert dark:brightness-0"
+                    />
                     <span className="hidden lg:block">{item.label}</span>
                   </Link>
                 );
@@ -149,10 +155,16 @@ const Menu = async () => {
                 return (
                   <SignOutButton key={item.label} redirectUrl="/">
                     <div
-                      className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 
-                  py-2 md:px-2 rounded-md hover:bg-pickSkyLight cursor-pointer"
+                      className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 dark:text-white
+                  py-2 md:px-2 rounded-md hover:bg-pickSkyLight dark:hover:bg-gray-700 cursor-pointer"
                     >
-                      <Image src={item.icon} alt="" width={20} height={20} />
+                      <Image
+                        src={item.icon}
+                        alt=""
+                        width={20}
+                        height={20}
+                        className="invert dark:brightness-0"
+                      />
                       <span className="hidden lg:block">{item.label}</span>
                     </div>
                   </SignOutButton>

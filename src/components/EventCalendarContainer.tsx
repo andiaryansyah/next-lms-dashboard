@@ -10,7 +10,7 @@ const EventCalendarContainer = async ({
 }) => {
   const { date } = searchParams;
   return (
-    <div className="bg-white p-4">
+    <div className="bg-white dark:bg-gray-900 p-4">
       <EventCalendar />
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold my-4">Events</h1>

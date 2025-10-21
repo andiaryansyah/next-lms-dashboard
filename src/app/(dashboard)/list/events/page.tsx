@@ -71,7 +71,8 @@ const EventListPage = async ({
   const renderRow = (item: EventList) => (
     <tr
       key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-pickPurpleLight"
+      className="border-b border-gray-200 dark:border-gray-900 even:bg-slate-50 dark:even:bg-gray-800 text-sm
+       hover:bg-pickPurpleLight dark:hover:bg-gray-400 dark:hover:text-gray-900"
     >
       <td className="flex items-center gap-4 p-4">{item.title}</td>
       <td>{item.class?.name || "All"}</td>
@@ -179,7 +180,7 @@ const EventListPage = async ({
   ]);
 
   return (
-    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+    <div className="bg-white dark:bg-gray-900 p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold hidden md:block">All Events</h1>

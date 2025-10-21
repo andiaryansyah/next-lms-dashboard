@@ -58,10 +58,10 @@ const ParentForm = ({
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-xl font-semibold dark:text-zinc-100">
         {type === "create" ? "Create a new parent" : "Update the parent"}
       </h1>
-      <span className="text-xs text-gray-400 font-medium">
+      <span className="text-xs text-gray-400 font-medium dark:text-zinc-100">
         Authentication Imformation
       </span>
       <div className="flex justify-between flex-wrap gap-4">
@@ -89,7 +89,7 @@ const ParentForm = ({
           error={errors.password}
         />
       </div>
-      <span className="text-xs text-gray-400 font-medium">
+      <span className="text-xs text-gray-400 font-medium dark:text-zinc-100">
         Personal Information
       </span>
       <div className="flex justify-between flex-wrap gap-4">

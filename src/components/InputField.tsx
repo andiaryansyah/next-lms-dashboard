@@ -43,7 +43,7 @@ const InputField = ({
         <textarea
           {...register(name)}
           defaultValue={defaultValue}
-          className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+          className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-800 dark:text-zinc-100"
           rows={rows}
           maxLength={maxLength}
           placeholder={placeholder}
@@ -53,7 +53,7 @@ const InputField = ({
           type={type}
           step={step}
           {...register(name)}
-          className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+          className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-800 dark:text-zinc-100"
           {...inputProps}
           defaultValue={defaultValue}
           placeholder={placeholder}
