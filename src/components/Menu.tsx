@@ -1,13 +1,13 @@
 // import { role } from "@/lib/data";
 import { SignOutButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const Menu = async () => {
-  const user = await currentUser();
-  const role = user?.publicMetadata.role as string;
+  const { userId, sessionClaims } = await auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
 
   const menuItems = [
     {
@@ -105,7 +105,7 @@ const Menu = async () => {
         {
           icon: "/profile.png",
           label: "Profile",
-          href: `/list/${role}s/${user?.id}`,
+          href: `/list/${role}s/${userId}`,
           visible: ["teacher", "student"],
         },
         {
@@ -132,7 +132,7 @@ const Menu = async () => {
             {i.title}
           </span>
           {i.items.map((item) => {
-            if (item.visible.includes(role)) {
+            if (item.visible.includes(role!)) {
               if (item.label !== "Logout") {
                 return (
                   <Link

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import BigCalendarContainer from "./BigCalendarContainer";
 import { useRouter } from "next/navigation";
 
 type students = {
@@ -40,7 +39,7 @@ const DropdownStudents = ({ students }: { students: students }) => {
       <div className="flex flex-col gap-2 w-full md:w-1/4 mb-5">
         <label className="text-xs text-gray-500">Choose Student</label>
         <select
-          className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none"
+          className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full focus:ring-2 focus:ring-green-500 outline-none dark:bg-gray-800 dark:ring-gray-700 dark:focus:ring-green-400"
           defaultValue={studentId}
           onChange={handleChange}
         >

@@ -97,7 +97,7 @@ const TeacherListPage = async ({
                 alt=""
                 width={20}
                 height={20}
-                className="invert dark:brightness-0"
+                // className="invert dark:brightness-0"
               />
             </button>
           </Link>

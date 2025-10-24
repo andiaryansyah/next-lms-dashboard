@@ -244,13 +244,7 @@ const FormModal = ({
         className={`${size} flex items-center justify-center rounded-full ${bgColor}`}
         onClick={() => setOpen(true)}
       >
-        <Image
-          src={`/${type}.png`}
-          alt={type}
-          width={16}
-          height={16}
-          // className="invert dark:brightness-0"
-        />
+        <Image src={`/${type}.png`} alt={type} width={16} height={16} />
       </button>
       {open && (
         <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 flex items-center justify-center z-50">

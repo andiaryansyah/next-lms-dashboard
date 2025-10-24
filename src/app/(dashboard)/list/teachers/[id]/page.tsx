@@ -80,7 +80,7 @@ const SingleTeacherPage = async ({
                     alt=""
                     width={14}
                     height={14}
-                    className="invert dark:brightness-0"
+                    className="brightness-0 dark:invert"
                   />
                   <span>{teacher.email || "-"}</span>
                 </div>
@@ -90,7 +90,7 @@ const SingleTeacherPage = async ({
                     alt=""
                     width={14}
                     height={14}
-                    className="invert dark:brightness-0"
+                    className="brightness-0 dark:invert"
                   />
                   <span>
                     {new Intl.DateTimeFormat("id-ID").format(teacher.birthday)}
@@ -103,7 +103,7 @@ const SingleTeacherPage = async ({
                     alt=""
                     width={14}
                     height={14}
-                    className="invert dark:brightness-0"
+                    className="brightness-0 dark:invert"
                   />
                   <span>{teacher.phone || "-"}</span>
                 </div>

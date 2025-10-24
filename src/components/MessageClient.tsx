@@ -4,6 +4,7 @@ import MessageForm from "@/components/forms/MessageForm";
 import MessageListContainer from "@/components/MessageListContainer";
 import Image from "next/image";
 import TableSearchMessage from "./TableSearchMessage";
+import useSWR from "swr";
 
 export type MessageSidebarProps = {
   id: string;
@@ -26,6 +27,40 @@ export default function MessagesPageClient({
   const [selectedUser, setSelectedUser] = useState<MessageSidebarProps | null>(
     null
   );
+
+  const fetcher = (url: string, body: any) =>
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }).then((res) => res.json());
+
+  const { data: unread, mutate } = useSWR(
+    ["/api/messages/unread", { receiverId: currentUserId }],
+    ([url, body]) => fetcher(url, body),
+    {
+      refreshInterval: 3000,
+    }
+  );
+
+  const unreadMap = Object.fromEntries(
+    (unread && unread.countData ? unread.countData : []).map((item: any) => [
+      item.senderId,
+      item._count.senderId,
+    ])
+  );
+
+  const handleSelect = async (user: MessageSidebarProps) => {
+    setSelectedUser(user);
+
+    await fetch("/api/messages/read", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ senderId: user.id, receiverId: currentUserId }),
+    });
+
+    mutate();
+  };
 
   const receivedId = useMemo(() => {
     if (!selectedUser) return null;
@@ -72,29 +107,39 @@ export default function MessagesPageClient({
         <div className="h-full flex-grow rounded border p-4 shadow">
           <TableSearchMessage />
           <div className="overflow-y-auto h-[calc(100vh-150px)] mt-6">
-            {uniqueUsers.map((user) => (
-              <div
-                key={user.id}
-                onClick={() => setSelectedUser(user)}
-                className={`flex items-center p-4 gap-4 cursor-pointer rounded-lg transition-all mt-2  ${
-                  selectedUser?.id === user.id
-                    ? "bg-blue-100 dark:text-gray-900"
-                    : "hover:bg-gray-100 dark:hover:bg-gray-300 dark:hover:text-gray-900 "
-                }`}
-              >
-                <Image
-                  src={"/avatar.png"}
-                  alt={""}
-                  width={60}
-                  height={60}
-                  className="rounded-full object-cover"
-                />
-                <div>
-                  <p className="font-bold">{user.displayName}</p>
-                  <p className="text-xs text-gray-500">Online</p>
+            {uniqueUsers.map((user) => {
+              const notifCount = unreadMap[user.id] || 0;
+              return (
+                <div
+                  key={user.id}
+                  onClick={() => handleSelect(user)}
+                  className={`flex items-center justify-between p-4 gap-4 cursor-pointer rounded-lg transition-all mt-2  ${
+                    selectedUser?.id === user.id
+                      ? "bg-blue-100 dark:text-gray-900"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-300 dark:hover:text-gray-900 "
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <Image
+                      src={"/avatar.png"}
+                      alt={""}
+                      width={60}
+                      height={60}
+                      className="rounded-full object-cover"
+                    />
+                    <div>
+                      <p className="font-bold">{user.displayName}</p>
+                      {/* <p className="text-xs text-gray-500">Online</p> */}
+                    </div>
+                  </div>
+                  {notifCount > 0 && (
+                    <div className="bg-red-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+                      {notifCount}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -110,7 +155,7 @@ export default function MessagesPageClient({
           </div>
         ) : (
           <div className="flex items-center justify-center h-full text-gray-500">
-            Pilih seseorang untuk memulai percakapan 👋
+            Select someone to start a conversation with 👋
           </div>
         )}
       </div>

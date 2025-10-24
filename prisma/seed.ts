@@ -248,6 +248,7 @@ async function main() {
         startTime: new Date(new Date().setHours(new Date().getHours() + 1)),
         endTime: new Date(new Date().setHours(new Date().getHours() + 2)),
         classId: (i % 5) + 1,
+        isRead: false,
       },
     });
   }
@@ -260,6 +261,7 @@ async function main() {
         description: `Description for Announcement ${i}`,
         date: new Date(),
         classId: (i % 5) + 1,
+        isRead: false,
       },
     });
   }
@@ -292,12 +294,14 @@ async function main() {
         senderId: user1.id,
         receiverId: user2.id,
         displayName: user1.displayName,
+        isRead: true,
       },
       {
         content: "Siap Pak, sudah saya kerjakan!",
         senderId: user2.id,
         receiverId: user1.id,
         displayName: user2.displayName,
+        isRead: false,
       },
     ],
   });

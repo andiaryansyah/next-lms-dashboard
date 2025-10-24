@@ -75,7 +75,7 @@ const SingleStudentPage = async ({
                     alt=""
                     width={14}
                     height={14}
-                    className="invert dark:brightness-0"
+                    className="brightness-0 dark:invert"
                   />
                   <span>{student.email}</span>
                 </div>
@@ -85,7 +85,7 @@ const SingleStudentPage = async ({
                     alt=""
                     width={14}
                     height={14}
-                    className="invert dark:brightness-0"
+                    className="brightness-0 dark:invert"
                   />
                   <span>
                     {new Intl.DateTimeFormat("id-ID").format(student.birthday)}
@@ -97,7 +97,7 @@ const SingleStudentPage = async ({
                     alt=""
                     width={14}
                     height={14}
-                    className="invert dark:brightness-0"
+                    className="brightness-0 dark:invert"
                   />
                   <span>{student.phone}</span>
                 </div>

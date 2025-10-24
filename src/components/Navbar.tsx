@@ -2,24 +2,25 @@ import { UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 import React from "react";
+import MessageNotification from "./MessageNotification";
 
 const Navbar = async () => {
   const user = await currentUser();
+  const userId = user?.id;
   return (
     <div className="flex items-center justify-between p-4 dark:bg-gray-800">
       {/* ICONS AND USER */}
       <div className="flex items-center gap-6 justify-end w-full">
-        {/* {user && user.username !== "admin" && (
-          <div className="bg-white dark:bg-gray-800 rounded-full w-7 h-7 flex items-center justify-center cursor-pointer">
-            <Image src="/message.png" alt="message" width={28} height={28} />
-          </div>
+        {user && user.username !== "admin" && (
+          <MessageNotification currentUserId={userId!} />
         )}
-        <div className="bg-white dark:bg-gray-800 rounded-full w-7 h-7 flex items-center justify-center cursor-pointer relative">
+        {/* <div className="bg-white dark:bg-gray-800 rounded-full w-7 h-7 flex items-center justify-center cursor-pointer relative">
           <Image
             src="/announcement.png"
             alt="announcement"
             width={28}
             height={28}
+            className="invert dark:brightness-0"
           />
           <div className="absolute -top-3 -right-3 w-5 h-5 flex items-center justify-center bg-purple-500 text-white rounded-full text-xs">
             1

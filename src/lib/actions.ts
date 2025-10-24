@@ -162,6 +162,18 @@ export const createTeacher = async (
         role: "teacher",
       },
     });
+
+    await prisma.user.upsert({
+      where: { id: user.id },
+      update: {},
+      create: {
+        id: user.id,
+        username: user.id,
+        role: "TEACHER",
+        displayName: data.name + (data.surname ? ` ${data.surname}` : ""),
+      },
+    });
+
     await prisma.teacher.create({
       data: {
         id: user.id,
@@ -284,6 +296,18 @@ export const createstudent = async (
         role: "student",
       },
     });
+
+    await prisma.user.upsert({
+      where: { id: user.id },
+      update: {},
+      create: {
+        id: user.id,
+        username: user.id,
+        role: "STUDENT",
+        displayName: data.name + (data.surname ? ` ${data.surname}` : ""),
+      },
+    });
+
     await prisma.student.create({
       data: {
         id: user.id,
@@ -681,6 +705,18 @@ export const createParent = async (
         role: "parent",
       },
     });
+
+    await prisma.user.upsert({
+      where: { id: user.id },
+      update: {},
+      create: {
+        id: user.id,
+        username: user.id,
+        role: "PARENT",
+        displayName: data.name + (data.surname ? ` ${data.surname}` : ""),
+      },
+    });
+
     await prisma.parent.create({
       data: {
         id: user.id,
@@ -979,7 +1015,7 @@ export const createMessage = async (
   const receiverId = data.get("receiverId") as string;
   const displayName = data.get("displayName") as string;
 
-  if (content === "") {
+  if (content === "" || !receiverId) {
     return { success: false, error: true };
   }
   try {
@@ -989,6 +1025,7 @@ export const createMessage = async (
         senderId: user?.id!,
         receiverId: receiverId,
         displayName: displayName,
+        isRead: false,
       },
     });
 

@@ -29,7 +29,7 @@ const MessagesPage = async ({
             },
           },
 
-      select: { id: true, name: true, img: true, user: true },
+      select: { id: true, name: true, img: true, user: true, surname: true },
     }),
     prisma.student.findMany({
       where: query
@@ -45,7 +45,7 @@ const MessagesPage = async ({
             },
           },
 
-      select: { id: true, name: true, img: true, user: true },
+      select: { id: true, name: true, img: true, user: true, surname: true },
     }),
     prisma.parent.findMany({
       where: query
@@ -64,28 +64,28 @@ const MessagesPage = async ({
             },
           },
 
-      select: { id: true, name: true, user: true },
+      select: { id: true, name: true, user: true, surname: true },
     }),
   ]);
 
   const allUsers = [
     ...teachers.map((teacher) => ({
       id: teacher.id,
-      displayName: teacher.name,
+      displayName: teacher.name + " " + teacher.surname,
       img: teacher.img,
       receivedId: teacher.user.id,
       username: teacher.user.username,
     })),
     ...students.map((student) => ({
       id: student.id,
-      displayName: student.name,
+      displayName: student.name + " " + student.surname,
       img: student.img,
       receivedId: student.user.id,
       username: student.user.username,
     })),
     ...parents.map((parent) => ({
       id: parent.id,
-      displayName: parent.name,
+      displayName: parent.name + " " + parent.surname,
       img: null,
       receivedId: parent.user.id,
       username: parent.user.username,

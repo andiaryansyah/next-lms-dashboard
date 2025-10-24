@@ -48,7 +48,7 @@ const MessageList = ({ initialMessages }: MessageListProps) => {
   }, [initialMessages]);
 
   return (
-    <ul className="flex flex-col gap-4 overflow-y-auto h-[650px] ">
+    <ul className="flex flex-col gap-4 overflow-y-auto no-scrollbar h-[650px] ">
       {initialMessages && initialMessages.length !== 0 ? (
         initialMessages.map((message, index) => (
           <li key={message.id}>
@@ -73,7 +73,7 @@ const MessageList = ({ initialMessages }: MessageListProps) => {
         ))
       ) : (
         <div className="flex items-center justify-center h-full text-gray-500">
-          Tidak ada pesan
+          No Messsage
         </div>
       )}
     </ul>

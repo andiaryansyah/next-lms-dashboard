@@ -97,7 +97,7 @@ const TeacherForm = ({
       <span className="text-xs text-gray-400 font-medium dark:text-zinc-100">
         Personal Information
       </span>
-      <div>
+      <div className="flex items-center p-2 gap-4">
         <CldUploadWidget
           uploadPreset="school"
           onSuccess={(result, { widget }) => {
@@ -108,7 +108,7 @@ const TeacherForm = ({
           {({ open }) => {
             return (
               <div
-                className="text-xs text-gray-500 dark:text-zinc-100 flex items-center gap-2 cursor-pointer"
+                className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer dark:text-zinc-100"
                 onClick={() => open()}
               >
                 <Image
@@ -123,6 +123,11 @@ const TeacherForm = ({
             );
           }}
         </CldUploadWidget>
+        {img && (
+          <span className="truncate w-64 text-xs text-gray-500 dark:text-zinc-100">
+            - {img.url}
+          </span>
+        )}
       </div>
       <div className="flex justify-between flex-wrap gap-4">
         <InputField
