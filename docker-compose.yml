@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   postgress:
-   image: postgres:17
-  container_name: postgres_db
+    image: postgres:17
+    container_name: postgres_db
   environment:
     POSTGRES: aryansyah
     POSTGRES_PASSWORD: ary12345
