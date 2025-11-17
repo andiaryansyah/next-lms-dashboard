@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getCurrentScheme } from "@/lib/colorSheme";
+import InitClient from "./init-client";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default async function RootLayout({
     <ClerkProvider>
       <html lang="en" className={scheme === "dark" ? "dark" : ""}>
         <body className={inter.className}>
+          <InitClient />
           {children}
           <ToastContainer position="bottom-right" theme="dark" />
         </body>
