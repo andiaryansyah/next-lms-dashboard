@@ -1,21 +1,26 @@
 "use client";
 
+import { toggleScheme, getCurrentScheme } from "@/lib/colorSheme";
 import { useEffect, useState } from "react";
-import { getClientScheme, toggleScheme } from "@/lib/client/theme";
+import { useRouter } from "next/navigation";
 
 export default function ToggleTheme() {
+  const router = useRouter();
   const [isDark, setIsDark] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const scheme = getClientScheme();
-    setIsDark(scheme === "dark");
-    setMounted(true);
+    const load = async () => {
+      const scheme = await getCurrentScheme();
+      setIsDark(scheme === "dark");
+      setMounted(true);
+    };
+    load();
   }, []);
 
-  const handleToggle = () => {
-    const next = toggleScheme();
-    setIsDark(next === "dark");
+  const handleToggle = async () => {
+    const newScheme = await toggleScheme();
+    setIsDark(newScheme === "dark");
   };
 
   if (!mounted) return null;

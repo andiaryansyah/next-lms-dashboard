@@ -1,12 +1,9 @@
-import { cookies } from "next/headers";
-
 export const getCurrentScheme = async () => {
-  // Server side
+  // SERVER SIDE
   if (typeof window === "undefined") {
-    const cookieStore = await cookies();
-
-    const scheme = cookieStore.get("scheme")?.value;
-    return scheme ?? "light";
+    const { cookies } = await import("next/headers");
+    const scheme = cookies().get("scheme")?.value;
+    return scheme || "light";
   }
 
   // CLIENT SIDE

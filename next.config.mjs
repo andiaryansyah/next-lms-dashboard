@@ -20,13 +20,11 @@ const nextConfig = {
     ],
   },
 
-  // experimental: {
-  //   serverActions: {
-  //     allowedOrigins: ["localhost:3000"],
-  //   },
-  // },
-
-  productionBrowserSourceMaps: false,
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["localhost:3000"],
+    },
+  },
 };
 
 export default nextConfig;
