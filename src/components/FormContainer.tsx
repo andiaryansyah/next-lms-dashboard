@@ -142,7 +142,7 @@ const FormContainer = async ({ table, type, data, id }: FormContainerProps) => {
           select: { classId: true },
         });
 
-        const classIds = teacherLessons.map((lesson) => lesson.classId);
+        const classIds = teacherLessons.map((lesson: any) => lesson.classId);
 
         const resultStudents = await prisma.student.findMany({
           where: {
