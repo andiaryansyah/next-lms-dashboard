@@ -22,14 +22,14 @@ export default async function RootLayout({
   const scheme = await getCurrentScheme();
 
   return (
-    <html lang="en" className={scheme === "dark" ? "dark" : ""}>
-      <body className={inter.className}>
-        <ClerkProvider>
+    <ClerkProvider>
+      <html lang="en" className={scheme === "dark" ? "dark" : ""}>
+        <body className={inter.className}>
           <InitClient />
           {children}
           <ToastContainer position="bottom-right" theme="dark" />
-        </ClerkProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
