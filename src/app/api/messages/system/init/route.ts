@@ -9,7 +9,7 @@ export async function GET() {
   });
 
   if (admin) {
-    return Response.json({ message: "Admin already exists" });
+    return Response.json({ error: true, success: false });
   }
 
   const users = await client.users.getUserList({
@@ -46,5 +46,5 @@ export async function GET() {
     },
   });
 
-  return Response.json({ message: "Admin created!" });
+  return Response.json({ error: false, success: true });
 }
