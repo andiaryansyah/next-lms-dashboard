@@ -1,5 +1,5 @@
 import MessageClient from "@/components/MessageClient";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import React from "react";
 

@@ -5,7 +5,7 @@ import FormContainer from "@/components/FormContainer";
 import FormModal from "@/components/FormModal";
 import PerformanceChart from "@/components/PerformanceChart";
 import StudentAttendanceCard from "@/components/StudentAttendanceCard";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { Class, Student } from "@prisma/client";
 import Image from "next/image";

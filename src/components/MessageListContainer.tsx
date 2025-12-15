@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { Message, Prisma } from "@prisma/client";
 import React, { useMemo } from "react";
 import MessageList from "./MessageList";

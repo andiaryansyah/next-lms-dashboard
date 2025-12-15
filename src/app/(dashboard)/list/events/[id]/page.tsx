@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { Announcement, Event } from "@prisma/client";
 import Link from "next/link";

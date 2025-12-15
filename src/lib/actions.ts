@@ -15,7 +15,7 @@ import {
   SubjectInputs,
   TeacherInputs,
 } from "./formValidationSchema";
-import { prisma } from "./prisma";
+import prisma from "./prisma";
 import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 

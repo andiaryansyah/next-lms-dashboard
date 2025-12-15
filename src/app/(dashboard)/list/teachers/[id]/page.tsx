@@ -4,7 +4,7 @@ import BigCalendarContainer from "@/components/BigCalendarContainer";
 import FormContainer from "@/components/FormContainer";
 import FormModal from "@/components/FormModal";
 import PerformanceChart from "@/components/PerformanceChart";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { Teacher } from "@prisma/client";
 import Image from "next/image";
