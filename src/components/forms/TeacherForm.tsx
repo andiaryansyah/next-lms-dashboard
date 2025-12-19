@@ -8,7 +8,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { TeacherInputs, teacherSchema } from "@/lib/formValidationSchema";
 import { useRouter } from "next/navigation";
 import { useFormState } from "react-dom";
-import { createTeacher, updateTeacher } from "@/lib/actions";
+import { createTeacher, updateTeacher } from "@/lib/server/actions";
 import { toast } from "react-toastify";
 import { CldUploadWidget } from "next-cloudinary";
 
@@ -212,7 +212,11 @@ const TeacherForm = ({
         </div>
       </div>
       {state.error && (
-        <span className="text-red-500">Something went wrong!</span>
+        <span className="text-red-500">
+          {typeof state.error === "string"
+            ? state.error
+            : "Something went wrong!"}
+        </span>
       )}
       <button className="bg-blue-400 hover:bg-blue-500 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}

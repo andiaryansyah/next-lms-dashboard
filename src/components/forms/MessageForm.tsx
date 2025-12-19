@@ -1,6 +1,6 @@
 "use client";
 
-import { createMessage } from "@/lib/actions";
+import { createMessage } from "@/lib/server/actions";
 import { MessageInputs, messageSchema } from "@/lib/formValidationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFormState } from "react-dom";

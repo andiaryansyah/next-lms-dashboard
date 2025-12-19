@@ -14,7 +14,7 @@ import {
   createSubject,
   updateExam,
   updateSubject,
-} from "@/lib/actions";
+} from "@/lib/server/actions";
 import { useFormState } from "react-dom";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { toast } from "react-toastify";

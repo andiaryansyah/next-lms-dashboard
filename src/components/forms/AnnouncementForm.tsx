@@ -7,7 +7,7 @@ import {
   AnnouncementInputs,
   announcementSchema,
 } from "@/lib/formValidationSchema";
-import { createAnnouncement, updateAnnouncement } from "@/lib/actions";
+import { createAnnouncement, updateAnnouncement } from "@/lib/server/actions";
 import { useFormState } from "react-dom";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { toast } from "react-toastify";

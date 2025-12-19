@@ -36,7 +36,7 @@ export const teacherSchema = z.object({
     .or(z.literal("")),
   name: z.string().min(1, { message: "First name is required!" }),
   surname: z.string().min(1, { message: "Last name is required!" }),
-  phone: z.string().optional(),
+  phone: z.string().optional().nullable(),
   address: z.string(),
   birthday: z.coerce.date({ message: "Birthday is required!" }),
   gender: z.enum(["MALE", "FEMALE"], { message: "Gender is required" }),

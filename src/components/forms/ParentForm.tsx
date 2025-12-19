@@ -7,7 +7,7 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import { ParentInputs, parentSchema } from "@/lib/formValidationSchema";
 import { useRouter } from "next/navigation";
 import { useFormState } from "react-dom";
-import { createParent, updateParent } from "@/lib/actions";
+import { createParent, updateParent } from "@/lib/server/actions";
 import { toast } from "react-toastify";
 
 const ParentForm = ({
@@ -133,9 +133,14 @@ const ParentForm = ({
         )}
       </div>
 
-      {/* {state.error && (
-        <span className="text-red-500">Something went wrong!</span>
-      )} */}
+      {state.error && (
+        <span className="text-red-500">
+          {" "}
+          {typeof state.error === "string"
+            ? state.error
+            : "Something went wrong!"}
+        </span>
+      )}
       <button className="bg-blue-400 text-white p-2 rounded-md hover:bg-blue-500">
         {type === "create" ? "Create" : "Update"}
       </button>

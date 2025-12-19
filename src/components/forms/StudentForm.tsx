@@ -18,7 +18,7 @@ import {
   createTeacher,
   updateStudent,
   updateTeacher,
-} from "@/lib/actions";
+} from "@/lib/server/actions";
 import { toast } from "react-toastify";
 import { CldUploadWidget } from "next-cloudinary";
 
@@ -265,7 +265,11 @@ const StudentForm = ({
         </div>
       </div>
       {state.error && (
-        <span className="text-red-500">Something went wrong!</span>
+        <span className="text-red-500">
+          {typeof state.error === "string"
+            ? state.error
+            : "Something went wrong!"}
+        </span>
       )}
       <button className="bg-blue-400 text-white p-2 rounded-md hover:bg-blue-500">
         {type === "create" ? "Create" : "Update"}

@@ -8,7 +8,7 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { LessonInputs, lessonSchema } from "@/lib/formValidationSchema";
-import { createLesson, updateLesson } from "@/lib/actions";
+import { createLesson, updateLesson } from "@/lib/server/actions";
 
 const LessonForm = ({
   type,

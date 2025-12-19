@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { ServerActionError } from "../errors";
 import {
   AnnouncementInputs,
   AssignmentInputs,
@@ -14,12 +15,12 @@ import {
   StudentInputs,
   SubjectInputs,
   TeacherInputs,
-} from "./formValidationSchema";
-import prisma from "./prisma";
+} from "../formValidationSchema";
+import prisma from "../prisma";
 import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-type currentState = { success: boolean; error: boolean };
+type currentState = { success: boolean; error: boolean | string };
 
 //SUBJECTS ACTIONS
 
@@ -40,8 +41,10 @@ export const createSubject = async (
     // revalidatePath("/list/subjects");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -63,8 +66,10 @@ export const updateSubject = async (
     // revalidatePath("/list/subjects");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -81,8 +86,10 @@ export const deleteSubject = async (
     // revalidatePath("/list/subjects");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -100,8 +107,10 @@ export const createClass = async (
     // revalidatePath("/list/classes");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -120,8 +129,10 @@ export const updateClass = async (
     // revalidatePath("/list/classes");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -140,8 +151,10 @@ export const deleteClass = async (
     // revalidatePath("/list/classes");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -152,6 +165,16 @@ export const createTeacher = async (
   data: TeacherInputs
 ) => {
   try {
+    if (data.phone) {
+      const existingPhone = await prisma.teacher.findUnique({
+        where: { phone: data.phone },
+      });
+
+      if (existingPhone) {
+        return { success: false, error: "Phone number already exists" };
+      }
+    }
+
     const client = await clerkClient();
     const user = await client.users.createUser({
       username: data.username,
@@ -198,8 +221,11 @@ export const createTeacher = async (
     // revalidatePath("/list/teachers");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    // console.log(error);
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -211,6 +237,16 @@ export const updateTeacher = async (
     return { success: false, error: true };
   }
   try {
+    if (data.phone) {
+      const existingPhone = await prisma.teacher.findUnique({
+        where: { phone: data.phone },
+      });
+
+      if (existingPhone) {
+        return { success: false, error: "Phone number already exists" };
+      }
+    }
+
     const client = await clerkClient();
     const user = await client.users.updateUser(data.id, {
       username: data.username,
@@ -245,8 +281,10 @@ export const updateTeacher = async (
     // revalidatePath("/list/teachers");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -266,8 +304,10 @@ export const deleteTeacher = async (
     // revalidatePath("/list/teachers");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -286,6 +326,16 @@ export const createstudent = async (
     return { success: false, error: true };
   }
   try {
+    if (data.phone) {
+      const existingPhone = await prisma.teacher.findUnique({
+        where: { phone: data.phone },
+      });
+
+      if (existingPhone) {
+        return { success: false, error: "Phone number already exists" };
+      }
+    }
+
     const client = await clerkClient();
     const user = await client.users.createUser({
       username: data.username,
@@ -330,8 +380,10 @@ export const createstudent = async (
     // revalidatePath("/list/teachers");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -343,6 +395,16 @@ export const updateStudent = async (
     return { success: false, error: true };
   }
   try {
+    if (data.phone) {
+      const existingPhone = await prisma.teacher.findUnique({
+        where: { phone: data.phone },
+      });
+
+      if (existingPhone) {
+        return { success: false, error: "Phone number already exists" };
+      }
+    }
+
     const client = await clerkClient();
     const user = await client.users.updateUser(data.id, {
       username: data.username,
@@ -375,8 +437,10 @@ export const updateStudent = async (
     // revalidatePath("/list/teachers");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -396,8 +460,10 @@ export const deleteStudent = async (
     // revalidatePath("/list/teachers");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -435,8 +501,10 @@ export const createExam = async (
     // revalidatePath("/list/exams");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -474,8 +542,10 @@ export const updateExam = async (
     // revalidatePath("/list/exams");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -499,8 +569,10 @@ export const deleteExam = async (
     // revalidatePath("/list/exams");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -538,8 +610,10 @@ export const createAssignment = async (
     // revalidatePath("/list/assignments");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -577,8 +651,10 @@ export const updateAssignment = async (
     // revalidatePath("/list/assignments");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -602,8 +678,10 @@ export const deleteAssignment = async (
     // revalidatePath("/list/assignments");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -634,8 +712,10 @@ export const createLesson = async (
     // revalidatePath("/list/lessons");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -665,8 +745,10 @@ export const updateLesson = async (
     // revalidatePath("/list/lessons");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -683,8 +765,10 @@ export const deleteLesson = async (
     // revalidatePath("/list/lessons");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -695,6 +779,16 @@ export const createParent = async (
   data: ParentInputs
 ) => {
   try {
+    if (data.phone) {
+      const existingPhone = await prisma.teacher.findUnique({
+        where: { phone: data.phone },
+      });
+
+      if (existingPhone) {
+        return { success: false, error: "Phone number already exists" };
+      }
+    }
+
     const client = await clerkClient();
     const user = await client.users.createUser({
       username: data.username,
@@ -733,8 +827,10 @@ export const createParent = async (
     // revalidatePath("/list/parents");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -746,6 +842,16 @@ export const updateParent = async (
     return { success: false, error: true };
   }
   try {
+    if (data.phone) {
+      const existingPhone = await prisma.teacher.findUnique({
+        where: { phone: data.phone },
+      });
+
+      if (existingPhone) {
+        return { success: false, error: "Phone number already exists" };
+      }
+    }
+
     const client = await clerkClient();
     const user = await client.users.updateUser(data.id, {
       username: data.username,
@@ -772,8 +878,10 @@ export const updateParent = async (
     // revalidatePath("/list/parents");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -793,8 +901,10 @@ export const deleteParent = async (
     // revalidatePath("/list/parent");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -817,8 +927,10 @@ export const createResult = async (
     // revalidatePath("/list/results");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -840,8 +952,10 @@ export const updateResult = async (
     // revalidatePath("/list/results");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -858,8 +972,10 @@ export const deleteResult = async (
     // revalidatePath("/list/results");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -883,8 +999,10 @@ export const createEvent = async (
     // revalidatePath("/list/events");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -908,8 +1026,10 @@ export const updateEvent = async (
     // revalidatePath("/list/events");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -929,8 +1049,10 @@ export const deleteEvent = async (
     // revalidatePath("/list/events");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -953,8 +1075,10 @@ export const createAnnouncement = async (
     // revalidatePath("/list/announcements");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -977,8 +1101,10 @@ export const updateAnnouncement = async (
     // revalidatePath("/list/announcements");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -998,8 +1124,10 @@ export const deleteAnnouncement = async (
     // revalidatePath("/list/announcements");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
 
@@ -1032,7 +1160,9 @@ export const createMessage = async (
     // revalidatePath("/list/announcements");
     return { success: true, error: false };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: true };
+    if (error instanceof ServerActionError) {
+      return { success: false, error: true };
+    }
+    throw error;
   }
 };
