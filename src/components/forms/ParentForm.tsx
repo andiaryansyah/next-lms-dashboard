@@ -135,10 +135,7 @@ const ParentForm = ({
 
       {state.error && (
         <span className="text-red-500">
-          {" "}
-          {typeof state.error === "string"
-            ? state.error
-            : "Something went wrong!"}
+          {state.message ? state.message : "Something went wrong!"}
         </span>
       )}
       <button className="bg-blue-400 text-white p-2 rounded-md hover:bg-blue-500">

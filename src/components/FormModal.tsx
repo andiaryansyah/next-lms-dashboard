@@ -19,6 +19,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
 import { FormContainerProps } from "./FormContainer";
+import LoadingComponent from "./LoadingComponent";
 
 // import SubjectForm from "./forms/SubjectForm";
 // import TeacherForm from "./forms/TeacherForm";
@@ -40,46 +41,46 @@ const deleteActionMap = {
 };
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
-  loading: () => <h1>Loading ....</h1>,
+  loading: () => <LoadingComponent />,
 });
 const StudentForm = dynamic(() => import("./forms/StudentForm"), {
-  loading: () => <h1>Loading ....</h1>,
+  loading: () => <LoadingComponent />,
 });
 
 const SubjectForm = dynamic(() => import("./forms/SubjectForm"), {
-  loading: () => <h1>Loading ....</h1>,
+  loading: () => <LoadingComponent />,
 });
 
 const ClassForm = dynamic(() => import("./forms/ClassForm"), {
-  loading: () => <h1>Loading ....</h1>,
+  loading: () => <LoadingComponent />,
 });
 
 const ExamForm = dynamic(() => import("./forms/ExamForm"), {
-  loading: () => <h1>Loading ....</h1>,
+  loading: () => <LoadingComponent />,
 });
 
 const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"), {
-  loading: () => <h1>Loading ....</h1>,
+  loading: () => <LoadingComponent />,
 });
 
 const LessonForm = dynamic(() => import("./forms/LessonForm"), {
-  loading: () => <h1>Loading ....</h1>,
+  loading: () => <LoadingComponent />,
 });
 
 const ParentForm = dynamic(() => import("./forms/ParentForm"), {
-  loading: () => <h1>Loading ....</h1>,
+  loading: () => <LoadingComponent />,
 });
 
 const EventForm = dynamic(() => import("./forms/EventForm"), {
-  loading: () => <h1>Loading ....</h1>,
+  loading: () => <LoadingComponent />,
 });
 
 const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"), {
-  loading: () => <h1>Loading ....</h1>,
+  loading: () => <LoadingComponent />,
 });
 
 const ResultForm = dynamic(() => import("./forms/ResultForm"), {
-  loading: () => <h1>Loading ....</h1>,
+  loading: () => <LoadingComponent />,
 });
 
 const forms: {

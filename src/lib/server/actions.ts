@@ -20,7 +20,7 @@ import prisma from "../prisma";
 import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-type currentState = { success: boolean; error: boolean | string };
+type currentState = { success: boolean; error: boolean; message?: string };
 
 //SUBJECTS ACTIONS
 
@@ -171,7 +171,11 @@ export const createTeacher = async (
       });
 
       if (existingPhone) {
-        return { success: false, error: "Phone number already exists" };
+        return {
+          success: false,
+          error: true,
+          message: "Phone number already exists",
+        };
       }
     }
 
@@ -243,7 +247,11 @@ export const updateTeacher = async (
       });
 
       if (existingPhone) {
-        return { success: false, error: "Phone number already exists" };
+        return {
+          success: false,
+          error: true,
+          message: "Phone number already exists",
+        };
       }
     }
 
@@ -332,7 +340,11 @@ export const createstudent = async (
       });
 
       if (existingPhone) {
-        return { success: false, error: "Phone number already exists" };
+        return {
+          success: false,
+          error: true,
+          message: "Phone number already exists",
+        };
       }
     }
 
@@ -401,7 +413,11 @@ export const updateStudent = async (
       });
 
       if (existingPhone) {
-        return { success: false, error: "Phone number already exists" };
+        return {
+          success: false,
+          error: true,
+          message: "Phone number already exists",
+        };
       }
     }
 
@@ -785,7 +801,11 @@ export const createParent = async (
       });
 
       if (existingPhone) {
-        return { success: false, error: "Phone number already exists" };
+        return {
+          success: false,
+          error: true,
+          message: "Phone number already exists",
+        };
       }
     }
 
@@ -848,7 +868,11 @@ export const updateParent = async (
       });
 
       if (existingPhone) {
-        return { success: false, error: "Phone number already exists" };
+        return {
+          success: false,
+          error: true,
+          message: "Phone number already exists",
+        };
       }
     }
 
