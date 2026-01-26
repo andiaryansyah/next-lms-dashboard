@@ -166,7 +166,7 @@ const EventListPage = async ({
       break;
   }
 
-  const [events, count] = await prisma.$transaction([
+  const [events, count] = await Promise.all([
     prisma.event.findMany({
       where: query,
       include: { class: true },

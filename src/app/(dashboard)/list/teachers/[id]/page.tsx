@@ -112,8 +112,8 @@ const SingleTeacherPage = async ({
           </div>
           {/* SMALL CARD */}
           <div className="flex-1 flex gap-4 justify-between flex-wrap">
-            {/* CARD */}
-            <div className="bg-white dark:bg-gray-900 p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]">
+            {/* ATTENDANCE CARD */}
+            {/* <div className="bg-white dark:bg-gray-900 p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]">
               <Image
                 src="/singleAttendance.png"
                 alt=""
@@ -125,7 +125,7 @@ const SingleTeacherPage = async ({
                 <h1 className="text-xl font-semibold">90%</h1>
                 <span className="text-sm text-gray-400">Attendance</span>
               </div>
-            </div>
+            </div> */}
             {/* CARD */}
             <div className="bg-white dark:bg-gray-900 p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]">
               <Image

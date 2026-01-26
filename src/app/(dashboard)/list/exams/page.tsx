@@ -141,7 +141,7 @@ const ExamListPage = async ({
       break;
   }
 
-  const [exams, count] = await prisma.$transaction([
+  const [exams, count] = await Promise.all([
     prisma.exam.findMany({
       where: query,
       include: {

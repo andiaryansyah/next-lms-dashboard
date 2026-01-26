@@ -145,7 +145,7 @@ const ResultListPage = async ({
       break;
   }
 
-  const [resultsRes, count] = await prisma.$transaction([
+  const [resultsRes, count] = await Promise.all([
     prisma.result.findMany({
       where: query,
       include: {

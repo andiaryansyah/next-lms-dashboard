@@ -103,7 +103,7 @@ const LessonListPage = async ({
     }
   }
 
-  const [lessons, count] = await prisma.$transaction([
+  const [lessons, count] = await Promise.all([
     prisma.lesson.findMany({
       where: query,
       include: {

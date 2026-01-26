@@ -100,7 +100,7 @@ const ParentListPage = async ({
     }
   }
 
-  const [parents, count] = await prisma.$transaction([
+  const [parents, count] = await Promise.all([
     prisma.parent.findMany({
       where: query,
       include: { students: true },

@@ -14,7 +14,7 @@ const MessagesPage = async ({
   const fullName: string =
     user?.firstName + (user?.lastName ? ` ${user?.lastName}` : "");
 
-  const [teachers, students, parents] = await prisma.$transaction([
+  const [teachers, students, parents] = await Promise.all([
     prisma.teacher.findMany({
       where: query
         ? {

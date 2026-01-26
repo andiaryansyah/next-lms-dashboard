@@ -100,7 +100,7 @@ const ClassListPage = async ({
     }
   }
 
-  const [classes, count] = await prisma.$transaction([
+  const [classes, count] = await Promise.all([
     prisma.class.findMany({
       where: query,
       include: { supervisor: true },

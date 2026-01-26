@@ -26,12 +26,14 @@ const TeacherForm = ({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<TeacherInputs>({
     resolver: zodResolver(teacherSchema),
   });
 
   const [img, setImg] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [state, formAction] = useFormState(
     type === "create" ? createTeacher : updateTeacher,
@@ -42,13 +44,19 @@ const TeacherForm = ({
   );
 
   const onSubmit = handleSubmit((data) => {
+    setIsLoading(true);
     // console.log(data);
     formAction({ ...data, img: img?.secure_url });
   });
 
   const router = useRouter();
 
+  console.log(state, "state");
+
   useEffect(() => {
+    if (state.success || state.error) {
+      setIsLoading(false);
+    }
     if (state.success) {
       toast(
         `Teacher has been ${
@@ -58,7 +66,12 @@ const TeacherForm = ({
       setOpen(false);
       router.refresh();
     }
-  }, [router, setOpen, state, type]);
+
+    if (state.error && type === "create") {
+      reset();
+      setImg(undefined);
+    }
+  }, [reset, router, setOpen, state, type]);
 
   const { teacherSubjects } = relatedData;
   return (
@@ -216,8 +229,13 @@ const TeacherForm = ({
           {state.message ? state.message : "Something went wrong!"}
         </span>
       )}
-      <button className="bg-blue-400 hover:bg-blue-500 text-white p-2 rounded-md">
-        {type === "create" ? "Create" : "Update"}
+      <button
+        className={`bg-blue-400 text-white p-2 rounded-md ${
+          isLoading ? "bg-gray-400" : "hover:bg-blue-500"
+        }`}
+        disabled={isLoading}
+      >
+        {isLoading ? "Processing..." : type === "create" ? "Create" : "Update"}
       </button>
     </form>
   );

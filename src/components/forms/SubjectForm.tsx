@@ -6,7 +6,7 @@ import InputField from "../InputField";
 import { SubjectInputs, subjectSchema } from "@/lib/formValidationSchema";
 import { createSubject, updateSubject } from "@/lib/server/actions";
 import { useFormState } from "react-dom";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
@@ -29,6 +29,8 @@ const SubjectForm = ({
     resolver: zodResolver(subjectSchema),
   });
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [state, formAction] = useFormState(
     type === "create" ? createSubject : updateSubject,
     {
@@ -38,6 +40,7 @@ const SubjectForm = ({
   );
 
   const onSubmit = handleSubmit((data) => {
+    setIsLoading(true);
     // console.log(data);
     formAction(data);
   });
@@ -45,6 +48,9 @@ const SubjectForm = ({
   const router = useRouter();
 
   useEffect(() => {
+    if (state.success || state.error) {
+      setIsLoading(false);
+    }
     if (state.success) {
       toast(
         `Subject has been ${
@@ -110,8 +116,13 @@ const SubjectForm = ({
       {state.error && (
         <span className="text-red-500">Something went wrong!</span>
       )}
-      <button className="bg-blue-400 text-white p-2 rounded-md hover:bg-blue-500">
-        {type === "create" ? "Create" : "Update"}
+      <button
+        className={`bg-blue-400 text-white p-2 rounded-md ${
+          isLoading ? "bg-gray-400" : "hover:bg-blue-500"
+        }`}
+        disabled={isLoading}
+      >
+        {isLoading ? "Processing..." : type === "create" ? "Create" : "Update"}
       </button>
     </form>
   );

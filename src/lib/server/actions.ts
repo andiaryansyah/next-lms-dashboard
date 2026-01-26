@@ -19,6 +19,9 @@ import {
 import prisma from "../prisma";
 import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
+import { validateClerkHelper } from "./validateClerkHelper";
+import { ClerkAPIResponseError } from "@clerk/shared";
 
 type currentState = { success: boolean; error: boolean; message?: string };
 
@@ -100,6 +103,14 @@ export const createClass = async (
   data: ClassInputs
 ) => {
   try {
+    if (!data.supervisorId) {
+      return {
+        success: false,
+        error: true,
+        message: "Supervisor not found",
+      };
+    }
+
     await prisma.class.create({
       data,
     });
@@ -119,6 +130,14 @@ export const updateClass = async (
   data: ClassInputs
 ) => {
   try {
+    // if (!data.supervisorId) {
+    //   return {
+    //     success: false,
+    //     error: true,
+    //     message: "Supervisor not found",
+    //   };
+    // }
+
     await prisma.class.update({
       where: {
         id: data.id,
@@ -165,6 +184,35 @@ export const createTeacher = async (
   data: TeacherInputs
 ) => {
   try {
+    const validation = await validateClerkHelper({
+      username: data.username,
+      email: data.email,
+    });
+
+    if (!validation.isValid) {
+      return {
+        success: false,
+        error: true,
+        message: validation.fieldErrors
+          ? validation.fieldErrors.username || validation.fieldErrors.email
+          : "Validation error",
+      };
+    }
+
+    if (data.email) {
+      const existingEmail = await prisma.teacher.findUnique({
+        where: { email: data.email },
+      });
+
+      if (existingEmail) {
+        return {
+          success: false,
+          error: true,
+          message: "Email already exists",
+        };
+      }
+    }
+
     if (data.phone) {
       const existingPhone = await prisma.teacher.findUnique({
         where: { phone: data.phone },
@@ -179,7 +227,22 @@ export const createTeacher = async (
       }
     }
 
+    // const client = await clerkClient();
+
+    // const existingUsername = await client.users.getUserList({
+    //   username: [data.username],
+    // });
+
+    // if (existingUsername.data.length > 0) {
+    //   return {
+    //     success: false,
+    //     error: true,
+    //     message: "Username already exists",
+    //   };
+    // }
+
     const client = await clerkClient();
+
     const user = await client.users.createUser({
       username: data.username,
       password: data.password,
@@ -225,10 +288,49 @@ export const createTeacher = async (
     // revalidatePath("/list/teachers");
     return { success: true, error: false };
   } catch (error) {
-    // console.log(error);
-    if (error instanceof ServerActionError) {
-      return { success: false, error: true };
+    if (error instanceof ClerkAPIResponseError) {
+      const fieldErrors: Record<string, string> = {};
+
+      error.errors.forEach((err) => {
+        const field = err.meta?.paramName;
+        if (field) {
+          fieldErrors[field] = err.longMessage ?? "Invalid value";
+        }
+      });
+
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
     }
+
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      const target = error.meta?.target;
+
+      const fieldErrors: Record<string, string> = {};
+
+      if (Array.isArray(target)) {
+        target.forEach((field) => {
+          fieldErrors[field] = `${field} already exists`;
+        });
+      } else if (typeof target === "string") {
+        fieldErrors[target] = `${target} already exists`;
+      } else {
+        fieldErrors._form = "Duplicate data detected";
+      }
+
+      console.log(fieldErrors);
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
+    }
+
     throw error;
   }
 };
@@ -241,9 +343,39 @@ export const updateTeacher = async (
     return { success: false, error: true };
   }
   try {
+    const validation = await validateClerkHelper({
+      userId: data.id,
+      username: data.username,
+      email: data.email,
+    });
+
+    if (!validation.isValid) {
+      return {
+        success: false,
+        error: true,
+        message: validation.fieldErrors
+          ? validation.fieldErrors.username || validation.fieldErrors.email
+          : "Validation error",
+      };
+    }
+
+    if (data.email) {
+      const existingEmail = await prisma.teacher.findFirst({
+        where: { email: data.email, NOT: { id: data.id } },
+      });
+
+      if (existingEmail) {
+        return {
+          success: false,
+          error: true,
+          message: "Email already exists",
+        };
+      }
+    }
+
     if (data.phone) {
-      const existingPhone = await prisma.teacher.findUnique({
-        where: { phone: data.phone },
+      const existingPhone = await prisma.teacher.findFirst({
+        where: { phone: data.phone, NOT: { id: data.id } },
       });
 
       if (existingPhone) {
@@ -256,6 +388,7 @@ export const updateTeacher = async (
     }
 
     const client = await clerkClient();
+
     const user = await client.users.updateUser(data.id, {
       username: data.username,
       ...(data.password !== "" && { password: data.password }),
@@ -287,11 +420,51 @@ export const updateTeacher = async (
       },
     });
     // revalidatePath("/list/teachers");
-    return { success: true, error: false };
+    return { success: true, error: false, message: "Update successfully" };
   } catch (error) {
-    if (error instanceof ServerActionError) {
-      return { success: false, error: true };
+    if (error instanceof ClerkAPIResponseError) {
+      const fieldErrors: Record<string, string> = {};
+
+      error.errors.forEach((err) => {
+        const field = err.meta?.paramName;
+        if (field) {
+          fieldErrors[field] = err.longMessage ?? "Invalid value";
+        }
+      });
+
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
     }
+
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      const target = error.meta?.target;
+
+      const fieldErrors: Record<string, string> = {};
+
+      if (Array.isArray(target)) {
+        target.forEach((field) => {
+          fieldErrors[field] = `${field} already exists`;
+        });
+      } else if (typeof target === "string") {
+        fieldErrors[target] = `${target} already exists`;
+      } else {
+        fieldErrors._form = "Duplicate data detected";
+      }
+
+      console.log(fieldErrors);
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
+    }
+
     throw error;
   }
 };
@@ -325,15 +498,48 @@ export const createstudent = async (
   currentState: currentState,
   data: StudentInputs
 ) => {
-  const classItem = await prisma.class.findUnique({
-    where: { id: data.classId },
-    include: { _count: { select: { students: true } } },
-  });
-
-  if (classItem && classItem.capacity === classItem._count.students) {
-    return { success: false, error: true };
-  }
   try {
+    const classItem = await prisma.class.findUnique({
+      where: { id: data.classId },
+      include: { _count: { select: { students: true } } },
+    });
+
+    if (classItem && classItem.capacity === classItem._count.students) {
+      return { success: false, error: true };
+    }
+
+    const validation = await validateClerkHelper({
+      username: data.username,
+      email: data.email,
+      parentId: data.parentId,
+    });
+
+    if (!validation.isValid) {
+      return {
+        success: false,
+        error: true,
+        message: validation.fieldErrors
+          ? validation.fieldErrors.username ||
+            validation.fieldErrors.email ||
+            validation.fieldErrors.parentId
+          : "Validation error",
+      };
+    }
+
+    if (data.email) {
+      const existingEmail = await prisma.teacher.findUnique({
+        where: { email: data.email },
+      });
+
+      if (existingEmail) {
+        return {
+          success: false,
+          error: true,
+          message: "Email already exists",
+        };
+      }
+    }
+
     if (data.phone) {
       const existingPhone = await prisma.teacher.findUnique({
         where: { phone: data.phone },
@@ -348,7 +554,10 @@ export const createstudent = async (
       }
     }
 
+    //----------END OF VALIDATIONS-----------
+
     const client = await clerkClient();
+
     const user = await client.users.createUser({
       username: data.username,
       password: data.password,
@@ -392,9 +601,49 @@ export const createstudent = async (
     // revalidatePath("/list/teachers");
     return { success: true, error: false };
   } catch (error) {
-    if (error instanceof ServerActionError) {
-      return { success: false, error: true };
+    if (error instanceof ClerkAPIResponseError) {
+      const fieldErrors: Record<string, string> = {};
+
+      error.errors.forEach((err) => {
+        const field = err.meta?.paramName;
+        if (field) {
+          fieldErrors[field] = err.longMessage ?? "Invalid value";
+        }
+      });
+
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
     }
+
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      const target = error.meta?.target;
+
+      const fieldErrors: Record<string, string> = {};
+
+      if (Array.isArray(target)) {
+        target.forEach((field) => {
+          fieldErrors[field] = `${field} already exists`;
+        });
+      } else if (typeof target === "string") {
+        fieldErrors[target] = `${target} already exists`;
+      } else {
+        fieldErrors._form = "Duplicate data detected";
+      }
+
+      console.log(fieldErrors);
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
+    }
+
     throw error;
   }
 };
@@ -403,13 +652,44 @@ export const updateStudent = async (
   currentState: currentState,
   data: StudentInputs
 ) => {
-  if (!data.id) {
-    return { success: false, error: true };
-  }
   try {
+    if (!data.id) {
+      return { success: false, error: true, message: "Student ID is required" };
+    }
+
+    const validation = await validateClerkHelper({
+      userId: data.id,
+      username: data.username,
+      email: data.email,
+    });
+
+    if (!validation.isValid) {
+      return {
+        success: false,
+        error: true,
+        message: validation.fieldErrors
+          ? validation.fieldErrors.username || validation.fieldErrors.email
+          : "Validation error",
+      };
+    }
+
+    if (data.email) {
+      const existingEmail = await prisma.teacher.findFirst({
+        where: { email: data.email, NOT: { id: data.id } },
+      });
+
+      if (existingEmail) {
+        return {
+          success: false,
+          error: true,
+          message: "Email already exists",
+        };
+      }
+    }
+
     if (data.phone) {
-      const existingPhone = await prisma.teacher.findUnique({
-        where: { phone: data.phone },
+      const existingPhone = await prisma.teacher.findFirst({
+        where: { phone: data.phone, NOT: { id: data.id } },
       });
 
       if (existingPhone) {
@@ -422,6 +702,7 @@ export const updateStudent = async (
     }
 
     const client = await clerkClient();
+
     const user = await client.users.updateUser(data.id, {
       username: data.username,
       ...(data.password !== "" && { password: data.password }),
@@ -453,9 +734,49 @@ export const updateStudent = async (
     // revalidatePath("/list/teachers");
     return { success: true, error: false };
   } catch (error) {
-    if (error instanceof ServerActionError) {
-      return { success: false, error: true };
+    if (error instanceof ClerkAPIResponseError) {
+      const fieldErrors: Record<string, string> = {};
+
+      error.errors.forEach((err) => {
+        const field = err.meta?.paramName;
+        if (field) {
+          fieldErrors[field] = err.longMessage ?? "Invalid value";
+        }
+      });
+
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
     }
+
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      const target = error.meta?.target;
+
+      const fieldErrors: Record<string, string> = {};
+
+      if (Array.isArray(target)) {
+        target.forEach((field) => {
+          fieldErrors[field] = `${field} already exists`;
+        });
+      } else if (typeof target === "string") {
+        fieldErrors[target] = `${target} already exists`;
+      } else {
+        fieldErrors._form = "Duplicate data detected";
+      }
+
+      console.log(fieldErrors);
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
+    }
+
     throw error;
   }
 };
@@ -795,6 +1116,37 @@ export const createParent = async (
   data: ParentInputs
 ) => {
   try {
+    const client = await clerkClient();
+
+    const validation = await validateClerkHelper({
+      username: data.username,
+      email: data.email,
+    });
+
+    if (!validation.isValid) {
+      return {
+        success: false,
+        error: true,
+        message: validation.fieldErrors
+          ? validation.fieldErrors.username || validation.fieldErrors.email
+          : "Validation error",
+      };
+    }
+
+    if (data.email) {
+      const existingEmail = await prisma.teacher.findUnique({
+        where: { email: data.email },
+      });
+
+      if (existingEmail) {
+        return {
+          success: false,
+          error: true,
+          message: "Email already exists",
+        };
+      }
+    }
+
     if (data.phone) {
       const existingPhone = await prisma.teacher.findUnique({
         where: { phone: data.phone },
@@ -809,7 +1161,6 @@ export const createParent = async (
       }
     }
 
-    const client = await clerkClient();
     const user = await client.users.createUser({
       username: data.username,
       password: data.password,
@@ -847,9 +1198,49 @@ export const createParent = async (
     // revalidatePath("/list/parents");
     return { success: true, error: false };
   } catch (error) {
-    if (error instanceof ServerActionError) {
-      return { success: false, error: true };
+    if (error instanceof ClerkAPIResponseError) {
+      const fieldErrors: Record<string, string> = {};
+
+      error.errors.forEach((err) => {
+        const field = err.meta?.paramName;
+        if (field) {
+          fieldErrors[field] = err.longMessage ?? "Invalid value";
+        }
+      });
+
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
     }
+
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      const target = error.meta?.target;
+
+      const fieldErrors: Record<string, string> = {};
+
+      if (Array.isArray(target)) {
+        target.forEach((field) => {
+          fieldErrors[field] = `${field} already exists`;
+        });
+      } else if (typeof target === "string") {
+        fieldErrors[target] = `${target} already exists`;
+      } else {
+        fieldErrors._form = "Duplicate data detected";
+      }
+
+      console.log(fieldErrors);
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
+    }
+
     throw error;
   }
 };
@@ -862,9 +1253,41 @@ export const updateParent = async (
     return { success: false, error: true };
   }
   try {
+    const client = await clerkClient();
+
+    const validation = await validateClerkHelper({
+      userId: data.id,
+      username: data.username,
+      email: data.email,
+    });
+
+    if (!validation.isValid) {
+      return {
+        success: false,
+        error: true,
+        message: validation.fieldErrors
+          ? validation.fieldErrors.username || validation.fieldErrors.email
+          : "Validation error",
+      };
+    }
+
+    if (data.email) {
+      const existingEmail = await prisma.teacher.findFirst({
+        where: { email: data.email, NOT: { id: data.id } },
+      });
+
+      if (existingEmail) {
+        return {
+          success: false,
+          error: true,
+          message: "Email already exists",
+        };
+      }
+    }
+
     if (data.phone) {
-      const existingPhone = await prisma.teacher.findUnique({
-        where: { phone: data.phone },
+      const existingPhone = await prisma.teacher.findFirst({
+        where: { phone: data.phone, NOT: { id: data.id } },
       });
 
       if (existingPhone) {
@@ -876,7 +1299,6 @@ export const updateParent = async (
       }
     }
 
-    const client = await clerkClient();
     const user = await client.users.updateUser(data.id, {
       username: data.username,
       ...(data.password !== "" && { password: data.password }),
@@ -902,9 +1324,49 @@ export const updateParent = async (
     // revalidatePath("/list/parents");
     return { success: true, error: false };
   } catch (error) {
-    if (error instanceof ServerActionError) {
-      return { success: false, error: true };
+    if (error instanceof ClerkAPIResponseError) {
+      const fieldErrors: Record<string, string> = {};
+
+      error.errors.forEach((err) => {
+        const field = err.meta?.paramName;
+        if (field) {
+          fieldErrors[field] = err.longMessage ?? "Invalid value";
+        }
+      });
+
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
     }
+
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      const target = error.meta?.target;
+
+      const fieldErrors: Record<string, string> = {};
+
+      if (Array.isArray(target)) {
+        target.forEach((field) => {
+          fieldErrors[field] = `${field} already exists`;
+        });
+      } else if (typeof target === "string") {
+        fieldErrors[target] = `${target} already exists`;
+      } else {
+        fieldErrors._form = "Duplicate data detected";
+      }
+
+      console.log(fieldErrors);
+      return {
+        success: false,
+        error: true,
+        fieldErrors,
+      };
+    }
+
     throw error;
   }
 };

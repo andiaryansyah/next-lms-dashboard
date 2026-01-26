@@ -80,7 +80,7 @@ const SubjectListPage = async ({
     }
   }
 
-  const [subjects, count] = await prisma.$transaction([
+  const [subjects, count] = await Promise.all([
     prisma.subject.findMany({
       where: query,
       include: { teachers: true },

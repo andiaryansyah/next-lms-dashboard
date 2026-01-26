@@ -139,7 +139,7 @@ const AssignmentListPage = async ({
       break;
   }
 
-  const [assignments, count] = await prisma.$transaction([
+  const [assignments, count] = await Promise.all([
     prisma.assignment.findMany({
       where: query,
       include: {

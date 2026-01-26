@@ -40,6 +40,7 @@ const ExamForm = ({
     name: string;
     class: ClassType[];
   };
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [state, formAction] = useFormState(
     type === "create" ? createResult : updateResult,
@@ -50,6 +51,7 @@ const ExamForm = ({
   );
 
   const onSubmit = handleSubmit((data) => {
+    setIsLoading(true);
     formAction(data);
   });
 
@@ -96,6 +98,9 @@ const ExamForm = ({
   };
 
   useEffect(() => {
+    if (state.success || state.error) {
+      setIsLoading(false);
+    }
     if (state.success) {
       toast(
         `Result has been ${
@@ -215,8 +220,13 @@ const ExamForm = ({
         <span className="text-red-500">Something went wrong!</span>
       )}
 
-      <button className="bg-blue-400 text-white p-2 rounded-md hover:bg-blue-500">
-        {type === "create" ? "Create" : "Update"}
+      <button
+        className={`bg-blue-400 text-white p-2 rounded-md ${
+          isLoading ? "bg-gray-400" : "hover:bg-blue-500"
+        }`}
+        disabled={isLoading}
+      >
+        {isLoading ? "Processing..." : type === "create" ? "Create" : "Update"}
       </button>
     </form>
   );

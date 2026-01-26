@@ -6,7 +6,7 @@ import InputField from "../InputField";
 import { EventInputs, eventSchema } from "@/lib/formValidationSchema";
 import { createEvent, updateEvent } from "@/lib/server/actions";
 import { useFormState } from "react-dom";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
@@ -28,6 +28,7 @@ const EventForm = ({
   } = useForm<EventInputs>({
     resolver: zodResolver(eventSchema),
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [state, formAction] = useFormState(
     type === "create" ? createEvent : updateEvent,
@@ -38,6 +39,7 @@ const EventForm = ({
   );
 
   const onSubmit = handleSubmit((data) => {
+    setIsLoading(true);
     // console.log(data);
     formAction(data);
   });
@@ -45,6 +47,9 @@ const EventForm = ({
   const router = useRouter();
 
   useEffect(() => {
+    if (state.success || state.error) {
+      setIsLoading(false);
+    }
     if (state.success) {
       toast(
         `Event has been ${
@@ -137,8 +142,13 @@ const EventForm = ({
       {state.error && (
         <span className="text-red-500">Something went wrong!</span>
       )}
-      <button className="bg-blue-400 text-white p-2 rounded-md hover:bg-blue-500">
-        {type === "create" ? "Create" : "Update"}
+      <button
+        className={`bg-blue-400 text-white p-2 rounded-md ${
+          isLoading ? "bg-gray-400" : "hover:bg-blue-500"
+        }`}
+        disabled={isLoading}
+      >
+        {isLoading ? "Processing..." : type === "create" ? "Create" : "Update"}
       </button>
     </form>
   );

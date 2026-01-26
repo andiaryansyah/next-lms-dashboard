@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import InputField from "../InputField";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ParentInputs, parentSchema } from "@/lib/formValidationSchema";
 import { useRouter } from "next/navigation";
 import { useFormState } from "react-dom";
@@ -29,6 +29,8 @@ const ParentForm = ({
     resolver: zodResolver(parentSchema),
   });
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [state, formAction] = useFormState(
     type === "create" ? createParent : updateParent,
     {
@@ -38,6 +40,7 @@ const ParentForm = ({
   );
 
   const onSubmit = handleSubmit((data) => {
+    setIsLoading(true);
     // console.log(data);
     formAction(data);
   });
@@ -45,6 +48,10 @@ const ParentForm = ({
   const router = useRouter();
 
   useEffect(() => {
+    if (state.success || state.error) {
+      setIsLoading(false);
+    }
+
     if (state.success) {
       toast(
         `Parent has been ${
@@ -138,8 +145,13 @@ const ParentForm = ({
           {state.message ? state.message : "Something went wrong!"}
         </span>
       )}
-      <button className="bg-blue-400 text-white p-2 rounded-md hover:bg-blue-500">
-        {type === "create" ? "Create" : "Update"}
+      <button
+        className={`bg-blue-400 text-white p-2 rounded-md ${
+          isLoading ? "bg-gray-400" : "hover:bg-blue-500"
+        }`}
+        disabled={isLoading}
+      >
+        {isLoading ? "Processing..." : type === "create" ? "Create" : "Update"}
       </button>
     </form>
   );
