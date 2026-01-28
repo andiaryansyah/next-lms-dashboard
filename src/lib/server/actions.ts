@@ -29,7 +29,7 @@ type currentState = { success: boolean; error: boolean; message?: string };
 
 export const createSubject = async (
   currentState: currentState,
-  data: SubjectInputs
+  data: SubjectInputs,
 ) => {
   try {
     await prisma.subject.create({
@@ -53,7 +53,7 @@ export const createSubject = async (
 
 export const updateSubject = async (
   currentState: currentState,
-  data: SubjectInputs
+  data: SubjectInputs,
 ) => {
   try {
     await prisma.subject.update({
@@ -78,7 +78,7 @@ export const updateSubject = async (
 
 export const deleteSubject = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const id = data.get("id") as string;
   try {
@@ -100,7 +100,7 @@ export const deleteSubject = async (
 
 export const createClass = async (
   currentState: currentState,
-  data: ClassInputs
+  data: ClassInputs,
 ) => {
   try {
     if (!data.supervisorId) {
@@ -127,7 +127,7 @@ export const createClass = async (
 
 export const updateClass = async (
   currentState: currentState,
-  data: ClassInputs
+  data: ClassInputs,
 ) => {
   try {
     // if (!data.supervisorId) {
@@ -157,7 +157,7 @@ export const updateClass = async (
 
 export const deleteClass = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const id = data.get("id") as string;
   try {
@@ -181,7 +181,7 @@ export const deleteClass = async (
 
 export const createTeacher = async (
   currentState: currentState,
-  data: TeacherInputs
+  data: TeacherInputs,
 ) => {
   try {
     const validation = await validateClerkHelper({
@@ -337,7 +337,7 @@ export const createTeacher = async (
 
 export const updateTeacher = async (
   currentState: currentState,
-  data: TeacherInputs
+  data: TeacherInputs,
 ) => {
   if (!data.id) {
     return { success: false, error: true };
@@ -471,7 +471,7 @@ export const updateTeacher = async (
 
 export const deleteTeacher = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const id = data.get("id") as string;
   try {
@@ -496,7 +496,7 @@ export const deleteTeacher = async (
 
 export const createstudent = async (
   currentState: currentState,
-  data: StudentInputs
+  data: StudentInputs,
 ) => {
   try {
     const classItem = await prisma.class.findUnique({
@@ -527,7 +527,7 @@ export const createstudent = async (
     }
 
     if (data.email) {
-      const existingEmail = await prisma.teacher.findUnique({
+      const existingEmail = await prisma.student.findUnique({
         where: { email: data.email },
       });
 
@@ -541,7 +541,7 @@ export const createstudent = async (
     }
 
     if (data.phone) {
-      const existingPhone = await prisma.teacher.findUnique({
+      const existingPhone = await prisma.student.findUnique({
         where: { phone: data.phone },
       });
 
@@ -650,7 +650,7 @@ export const createstudent = async (
 
 export const updateStudent = async (
   currentState: currentState,
-  data: StudentInputs
+  data: StudentInputs,
 ) => {
   try {
     if (!data.id) {
@@ -674,7 +674,7 @@ export const updateStudent = async (
     }
 
     if (data.email) {
-      const existingEmail = await prisma.teacher.findFirst({
+      const existingEmail = await prisma.student.findFirst({
         where: { email: data.email, NOT: { id: data.id } },
       });
 
@@ -688,7 +688,7 @@ export const updateStudent = async (
     }
 
     if (data.phone) {
-      const existingPhone = await prisma.teacher.findFirst({
+      const existingPhone = await prisma.student.findFirst({
         where: { phone: data.phone, NOT: { id: data.id } },
       });
 
@@ -783,7 +783,7 @@ export const updateStudent = async (
 
 export const deleteStudent = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const id = data.get("id") as string;
   try {
@@ -808,7 +808,7 @@ export const deleteStudent = async (
 
 export const createExam = async (
   currentState: currentState,
-  data: ExamInputs
+  data: ExamInputs,
 ) => {
   const { sessionClaims, userId } = await auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
@@ -847,7 +847,7 @@ export const createExam = async (
 
 export const updateExam = async (
   currentState: currentState,
-  data: ExamInputs
+  data: ExamInputs,
 ) => {
   const { sessionClaims, userId } = await auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
@@ -888,7 +888,7 @@ export const updateExam = async (
 
 export const deleteExam = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const { sessionClaims, userId } = await auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
@@ -917,7 +917,7 @@ export const deleteExam = async (
 
 export const createAssignment = async (
   currentState: currentState,
-  data: AssignmentInputs
+  data: AssignmentInputs,
 ) => {
   const { sessionClaims, userId } = await auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
@@ -956,7 +956,7 @@ export const createAssignment = async (
 
 export const updateAssignment = async (
   currentState: currentState,
-  data: AssignmentInputs
+  data: AssignmentInputs,
 ) => {
   const { sessionClaims, userId } = await auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
@@ -997,7 +997,7 @@ export const updateAssignment = async (
 
 export const deleteAssignment = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const { sessionClaims, userId } = await auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
@@ -1026,7 +1026,7 @@ export const deleteAssignment = async (
 
 export const createLesson = async (
   currentState: currentState,
-  data: LessonInputs
+  data: LessonInputs,
 ) => {
   const today = new Date().toISOString().split("T")[0];
 
@@ -1058,7 +1058,7 @@ export const createLesson = async (
 
 export const updateLesson = async (
   currentState: currentState,
-  data: LessonInputs
+  data: LessonInputs,
 ) => {
   const today = new Date().toISOString().split("T")[0];
 
@@ -1091,7 +1091,7 @@ export const updateLesson = async (
 
 export const deleteLesson = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const id = data.get("id") as string;
   try {
@@ -1113,7 +1113,7 @@ export const deleteLesson = async (
 
 export const createParent = async (
   currentState: currentState,
-  data: ParentInputs
+  data: ParentInputs,
 ) => {
   try {
     const client = await clerkClient();
@@ -1134,7 +1134,7 @@ export const createParent = async (
     }
 
     if (data.email) {
-      const existingEmail = await prisma.teacher.findUnique({
+      const existingEmail = await prisma.parent.findUnique({
         where: { email: data.email },
       });
 
@@ -1148,7 +1148,7 @@ export const createParent = async (
     }
 
     if (data.phone) {
-      const existingPhone = await prisma.teacher.findUnique({
+      const existingPhone = await prisma.parent.findUnique({
         where: { phone: data.phone },
       });
 
@@ -1247,7 +1247,7 @@ export const createParent = async (
 
 export const updateParent = async (
   currentState: currentState,
-  data: ParentInputs
+  data: ParentInputs,
 ) => {
   if (!data.id) {
     return { success: false, error: true };
@@ -1272,7 +1272,7 @@ export const updateParent = async (
     }
 
     if (data.email) {
-      const existingEmail = await prisma.teacher.findFirst({
+      const existingEmail = await prisma.parent.findFirst({
         where: { email: data.email, NOT: { id: data.id } },
       });
 
@@ -1286,7 +1286,7 @@ export const updateParent = async (
     }
 
     if (data.phone) {
-      const existingPhone = await prisma.teacher.findFirst({
+      const existingPhone = await prisma.parent.findFirst({
         where: { phone: data.phone, NOT: { id: data.id } },
       });
 
@@ -1373,7 +1373,7 @@ export const updateParent = async (
 
 export const deleteParent = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const id = data.get("id") as string;
   try {
@@ -1398,7 +1398,7 @@ export const deleteParent = async (
 
 export const createResult = async (
   currentState: currentState,
-  data: ResultInputs
+  data: ResultInputs,
 ) => {
   try {
     await prisma.result.create({
@@ -1422,7 +1422,7 @@ export const createResult = async (
 
 export const updateResult = async (
   currentState: currentState,
-  data: ResultInputs
+  data: ResultInputs,
 ) => {
   try {
     await prisma.result.update({
@@ -1447,7 +1447,7 @@ export const updateResult = async (
 
 export const deleteResult = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const id = data.get("id") as string;
   try {
@@ -1469,7 +1469,7 @@ export const deleteResult = async (
 
 export const createEvent = async (
   currentState: currentState,
-  data: EventInputs
+  data: EventInputs,
 ) => {
   try {
     await prisma.event.create({
@@ -1494,7 +1494,7 @@ export const createEvent = async (
 
 export const updateEvent = async (
   currentState: currentState,
-  data: EventInputs
+  data: EventInputs,
 ) => {
   try {
     await prisma.event.update({
@@ -1521,7 +1521,7 @@ export const updateEvent = async (
 
 export const deleteEvent = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const id = data.get("id") as string;
 
@@ -1546,7 +1546,7 @@ export const deleteEvent = async (
 
 export const createAnnouncement = async (
   currentState: currentState,
-  data: AnnouncementInputs
+  data: AnnouncementInputs,
 ) => {
   try {
     await prisma.announcement.create({
@@ -1570,7 +1570,7 @@ export const createAnnouncement = async (
 
 export const updateAnnouncement = async (
   currentState: currentState,
-  data: AnnouncementInputs
+  data: AnnouncementInputs,
 ) => {
   try {
     await prisma.announcement.update({
@@ -1596,7 +1596,7 @@ export const updateAnnouncement = async (
 
 export const deleteAnnouncement = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const id = data.get("id") as string;
 
@@ -1621,7 +1621,7 @@ export const deleteAnnouncement = async (
 
 export const createMessage = async (
   currentState: currentState,
-  data: FormData
+  data: FormData,
 ) => {
   const user = await currentUser();
 
